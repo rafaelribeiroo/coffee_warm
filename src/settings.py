@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 
     # My apps
     'src.apps.core',
-    'src.apps.blog',
+    'src.apps.posts',
 ]
 
 MIDDLEWARE = [
