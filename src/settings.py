@@ -76,8 +76,15 @@ WSGI_APPLICATION = 'src.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Padrão
+        'NAME': config_decouple('DB_NAME'),  # Nome do seu banco
+        'CONN_MAX_AGE': 60,  # Para setar a persistência de conexão para 60seg
+        'USER': config_decouple('DB_USER'),  # Seu usuário
+        'PASSWORD': config_decouple('DB_PASSWORD'),  # Sua senha
+        'HOST': config_decouple('DB_HOST'),  # inet end
+        # 8000 is default #Nem precisa pôr a porta, rodará na 8000
+        # (para testes)
+        'PORT': '',
     }
 }
 
