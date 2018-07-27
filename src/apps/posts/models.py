@@ -3,6 +3,7 @@ from django.db import models
 # Salvar as imgs com tec UUID, para evitar conflito de nomes.
 import os
 from uuid import uuid4
+from django.utils.deconstruct import deconstructible
 # Fim imports UUID
 
 # Imports reading time estimate
@@ -17,8 +18,16 @@ from django.db.models.signals import pre_save
 # Fim reading_time
 
 # Import slugify para o front-end
-from django.utils.text import slugify
+# from django.utils.text import slugify
 # Fim slugify
+
+# Import datetime
+import datetime
+from django.utils import timezone
+
+# Import auth
+from django.conf import settings
+
 
 # Métodos para armazenar as imagens com UUID name
 @deconstructible
@@ -31,6 +40,7 @@ class RandomFileName(object):
         return self.path % (uuid4(), extension)
 # Fim método
 
+
 # Classe para lidar com draft e post
 class PostQuerySet(models.query.QuerySet):
     def not_draft(self):
@@ -39,6 +49,7 @@ class PostQuerySet(models.query.QuerySet):
     def published(self):
         return self.filter(publish__lte=timezone.now()).not_draft()
 
+
 class PostManager(models.Manager):
     def get_queryset(self, *args, **kwargs):
         return PostQuerySet(self.model, using=self._db)
@@ -46,6 +57,7 @@ class PostManager(models.Manager):
     def active(self, *args, **kwargs):
         return self.get_queryset().published()
 # Fim classe draft
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=50)
@@ -56,6 +68,7 @@ class Tag(models.Model):
     def save(self, *args, **kwargs):
         self.title = self.title.lower()
         super(Tag, self).save(*args, **kwargs)
+
 
 class Post(models.model):
     user = models.ForeignKey('Usuário', settings.AUTH_USER_MODEL, default=1)
