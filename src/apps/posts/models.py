@@ -90,7 +90,7 @@ class Post(models.Model):
     width_field = models.IntegerField('Largura da imagem', default=0)
     height_field = models.IntegerField('Altura', default=0)
     # iframe_youtube = models.CharField('Link do Youtube', max_length=50)
-    content = models.TextField()
+    content = models.TextField('Conteúdo')
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)
     read_time = models.CharField(max_length=20, null=True, blank=True)
