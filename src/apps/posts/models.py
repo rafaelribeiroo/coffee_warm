@@ -22,7 +22,7 @@ from django.db.models.signals import pre_save
 # Fim slugify
 
 # Import datetime
-import datetime
+import datetime  # Atributo created
 from django.utils import timezone
 
 # Import auth
@@ -70,8 +70,13 @@ class Tag(models.Model):
         super(Tag, self).save(*args, **kwargs)
 
 
-class Post(models.model):
-    user = models.ForeignKey('Usuário', settings.AUTH_USER_MODEL, default=1)
+class Post(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        default=1,
+        on_delete=models.CASCADE,
+        verbose_name='Usuário',
+    )
     title = models.CharField('Título', max_length=120)
     # slug = models.SlugField(unique=True, max_length=250)
     image = models.ImageField(
@@ -84,7 +89,7 @@ class Post(models.model):
     )
     width_field = models.IntegerField('Largura da imagem', default=0)
     height_field = models.IntegerField('Altura', default=0)
-    iframe_youtube = models.CharField('Link do Youtube', max_length=50)
+    # iframe_youtube = models.CharField('Link do Youtube', max_length=50)
     content = models.TextField()
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)

@@ -21,10 +21,10 @@ class PostModelAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagModelAdmin(admin.ModelAdmin):
     list_display = ['title']
-    list_display_links = ['title']
-    list_editable = ['title']
-    list_filter = ['title']
-    search_fields = ['title']
+    # list_display_links = ['title']
+    # list_editable = ['title']
+    # list_filter = ['title']
+    # search_fields = ['title']
 
     class Meta:
         model = Tag
