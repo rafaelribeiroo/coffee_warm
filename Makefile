@@ -10,11 +10,11 @@ run:
 # Migração de banco de dados
 migrate:
 	python manage.py migrate
-	python manage.py migrate src/apps/posts
+	python manage.py migrate posts
 	
 migrations:
 	python manage.py makemigrations
-	python manage.py makemigrations src/apps/posts
+	python manage.py makemigrations posts
 
 # Criando o super usuário
 user:
