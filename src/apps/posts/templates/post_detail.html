@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load urlify %}
+
+{% block content %}
+<div class='col-sm-6 col-sm-offset-3'>
+    {% if object.image %}
+    <img src='{{ object.image.url }}' class='img-responsive' />
+    {% endif %}
+<h1>{{ object.title }} <small>{% if object.draft %}<span style='color:red;'>Draft</span> {% endif %}{{ object.publish }}</small></h1>
+{% if object.user.get_full_name %}
+<p>Author: {{ object.user.get_full_name }}</p>
+{% endif %}
+
+<hr/>
+</p>
+
+
+<div class='row'>
+<div class='col-sm-12'>
+
+{{ object.content|linebreaks }}
+
+<hr/>
+<br/>
+
+</div>
+</div>
+</div>
+
+
+{% endblock content %}

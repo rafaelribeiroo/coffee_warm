@@ -1,7 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post
+from .forms import PostForm
 
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.utils import timezone
+from urllib.parse import quote_plus
+from django.db import transaction
+from django.contrib import messages
 
 
 def post_list(request):
@@ -15,3 +20,45 @@ def post_list(request):
         'posts': posts,
     }
     return render(request, 'post_list.html', context)
+
+
+from django.views.generic import DetailView
+
+
+class PostDetailView(DetailView):
+    template_name = 'post_detail.html'
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        instance = get_object_or_404(Post, slug=slug)
+        if instance.created > timezone.now().date() or instance.draft:
+            if not self.request.user.is_staff or not self.request.user.is_superuser:
+                raise Http404
+        return instance
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostDetailView, self).get_context_data(*args, **kwargs)
+        instance = context['object']
+        context['share_string'] = quote_plus(instance.content)
+        return context
+
+
+@transaction.atomic
+def post_create(request):
+    # Verificar se após criar o slug aparece
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    form = PostForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        # Message Success
+        messages.success(request, "Criado com sucesso")
+        return HttpResponseRedirect(instance.get_absolute_url())
+        # return redirect('post_list')  # Namespace do post list. Return reverse url
+    context = {
+        'form': form,
+    }
+    return render(request, 'post_create.html', context)

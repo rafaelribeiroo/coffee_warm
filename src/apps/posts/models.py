@@ -16,6 +16,7 @@ from django.db.models.signals import pre_save
 
 # Import slugify para o front-end
 from django.utils.text import slugify
+from django.urls import reverse
 # Fim slugify
 
 # Import datetime
@@ -124,12 +125,12 @@ class Post(models.Model):
         return mark_safe(markdown(content))
 
     # Função para "slugifar" o front-end
-    # def get_absolute_url(self):
-    # return reverse("posts:detail", kwargs={"slug": self.slug})
+    def get_absolute_url(self):
+        return reverse("post:detail", kwargs={"slug": self.slug})  # Criar o detalhe antes
 
 
 # Função para estimar o tempo de leitura aproximadamente
-@receiver(pre_save, sender=Post)
+"""@receiver(pre_save, sender=Post)
 def CountReadTime(sender, instance, **kwargs):
     if instance is not None:
         content_length = len(instance.content)
@@ -142,7 +143,7 @@ def CountReadTime(sender, instance, **kwargs):
             else:
                 instance.read_time = '~' + str(minutes) + ' minutos'
         elif content_length > 240:
-            instance.read_time = 'menos que 1 minuto'
+            instance.read_time = 'menos que 1 minuto'"""
 # Fim da função
 
 
@@ -159,4 +160,14 @@ def create_slug(instance, new_slug=None):
     return slug
 
 
-pre_save.connect(CountReadTime, sender=Post)
+from .utils import unique_slug_generator
+
+
+# @receiver(pre_save, sender=Post)
+def pre_save_post_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+# pre_save.connect(CountReadTime, sender=Post)
+pre_save.connect(pre_save_post_receiver, sender=Post)
