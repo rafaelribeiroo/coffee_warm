@@ -8,9 +8,6 @@ from django.utils.deconstruct import deconstructible
 
 # Imports reading time estimate
 from django.utils.safestring import mark_safe
-# Lembrar de provisionar o pacote com:
-# pip install django-markdown-deux
-# Incluir markdown_deux nas installed_apps
 from markdown_deux import markdown
 
 from django.dispatch import receiver
@@ -18,7 +15,7 @@ from django.db.models.signals import pre_save
 # Fim reading_time
 
 # Import slugify para o front-end
-# from django.utils.text import slugify
+from django.utils.text import slugify
 # Fim slugify
 
 # Import datetime
@@ -47,7 +44,7 @@ class PostQuerySet(models.query.QuerySet):
         return self.filter(draft=False)
 
     def published(self):
-        return self.filter(publish__lte=timezone.now()).not_draft()
+        return self.filter(created__lte=timezone.now()).not_draft()
 
 
 class PostManager(models.Manager):
@@ -78,7 +75,7 @@ class Post(models.Model):
         verbose_name='Usuário',
     )
     title = models.CharField('Título', max_length=120)
-    # slug = models.SlugField(unique=True, max_length=250)
+    slug = models.SlugField(unique=True, max_length=250)
     image = models.ImageField(
         'Imagem',
         upload_to=RandomFileName('imgs_uploaded'),
@@ -89,7 +86,11 @@ class Post(models.Model):
     )
     width_field = models.IntegerField('Largura da imagem', default=0)
     height_field = models.IntegerField('Altura', default=0)
-    # iframe_youtube = models.CharField('Link do Youtube', max_length=50)
+    iframe_youtube = models.CharField(
+        'Link do Youtube',
+        max_length=50,
+        default="ala/ii22"
+    )
     content = models.TextField('Conteúdo')
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)
@@ -109,7 +110,7 @@ class Post(models.Model):
     objects = PostManager()
 
     def __str__(self):
-        return self.title  # return self.slug + " " + str(self.created)
+        return self.slug + " " + str(self.created)  # return self.title
 
     class Meta:
         ordering = ['title']
@@ -121,11 +122,6 @@ class Post(models.Model):
     def get_markdown(self):
         content = self.content
         return mark_safe(markdown(content))
-
-    # Função para "slugar" o título no django admin
-    '''def save(self, *args, **kwargs):
-        self.slug = slugify(self.title+str(self.created))
-        super(Post, self).save(*args, **kwargs)'''
 
     # Função para "slugifar" o front-end
     # def get_absolute_url(self):
@@ -149,10 +145,9 @@ def CountReadTime(sender, instance, **kwargs):
             instance.read_time = 'menos que 1 minuto'
 # Fim da função
 
-# Método slugify para o front-end, falta o do admin
 
-
-'''def create_slug(instance, new_slug=None):
+def create_slug(instance, new_slug=None):
+    # Método slugify para o front-end, falta o do admin
     slug = slugify(instance.title)
     if new_slug is not None:
         slug = new_slug
@@ -161,6 +156,7 @@ def CountReadTime(sender, instance, **kwargs):
     if exists:
         new_slug = "%s-%s" % (slug, qs.first().id)
         return create_slug(instance, new_slug=new_slug)
-    return slug'''
+    return slug
+
 
 pre_save.connect(CountReadTime, sender=Post)

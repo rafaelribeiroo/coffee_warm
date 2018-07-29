@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+	{% for post in posts %}
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="thumbnail">
+					{% if post.image %}
+						<img src='{{ post.image.url }}' class='img-responsive' />
+					{% endif %}
+					<div class="caption">
+						{% if post.draft %}
+							<h3>Staff only: Draft</h3>
+						{% endif %} 
+						{% if post.created > today %}
+							<h3>Staff Only: Future Post</h3>
+						{% endif %}
+
+						<h3>
+							<a>{{ post.title }}</a> 
+							<small>{{ post.created }}</small>
+							<small>{{ post.read_time }}</small>
+						</h3>
+						{% if post.user.get_full_name %}
+							<p>Author: {{ post.user.get_full_name }}</p>
+						{% endif %}
+						<p>{{ post.content|linebreaks|truncatechars:120 }}</p>
+					</div>
+				</div>
+			</div>
+			<hr/>
+		</div>
+	{% endfor %}
+{% endblock %}
