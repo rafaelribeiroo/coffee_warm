@@ -163,7 +163,7 @@ def create_slug(instance, new_slug=None):
 from .utils import unique_slug_generator
 
 
-# @receiver(pre_save, sender=Post)
+@receiver(pre_save, sender=Post)
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)

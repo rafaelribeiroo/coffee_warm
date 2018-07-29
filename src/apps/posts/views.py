@@ -22,6 +22,24 @@ def post_list(request):
     return render(request, 'post_list.html', context)
 
 
+def post_create(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    form = PostForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        # Message Success
+        messages.success(request, "Criado com sucesso")
+        return HttpResponseRedirect(instance.get_absolute_url())
+    context = {
+        'form': form,
+    }
+    return render(request, 'post_create.html', context)
+
+
 from django.views.generic import DetailView
 
 
@@ -41,24 +59,3 @@ class PostDetailView(DetailView):
         instance = context['object']
         context['share_string'] = quote_plus(instance.content)
         return context
-
-
-@transaction.atomic
-def post_create(request):
-    # Verificar se após criar o slug aparece
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404
-
-    form = PostForm(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.user = request.user
-        instance.save()
-        # Message Success
-        messages.success(request, "Criado com sucesso")
-        return HttpResponseRedirect(instance.get_absolute_url())
-        # return redirect('post_list')  # Namespace do post list. Return reverse url
-    context = {
-        'form': form,
-    }
-    return render(request, 'post_create.html', context)
