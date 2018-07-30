@@ -17,7 +17,7 @@
 						{% endif %}
 
 						<h3>
-							<!-- <a href="{% url 'post:update' %}">{{ post.title }}</a>  -->
+							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
 							<small>{{ post.created }}</small>
 							<br>
 							<small>{{ post.read_time }}</small>

@@ -8,7 +8,7 @@ from .models import (
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ['title', 'updated', 'read_time']
-    readonly_fields = ['slug']
+    readonly_fields = ['slug', 'read_time']
     list_display_links = ['updated']
     list_editable = ['title']
     list_filter = ['updated', 'timestamp']

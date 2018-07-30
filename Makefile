@@ -1,7 +1,7 @@
 # Remover os caches que o PY gera
 clean:
 	find . -type d -name '__pycache__' -prune -exec rm -rf {} \;
-	find . -name "*.pyc" -exec rm -rf {} \;i
+	find . -name "*.pyc" -exec rm -rf {} \;
 
 # Rodando em todos os pc's conectados na mesma rede
 run:

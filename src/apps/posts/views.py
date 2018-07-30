@@ -11,14 +11,12 @@ from django.contrib import messages
 
 def post_list(request):
     today = timezone.now().date()
-    posts = Post.objects.active()  # .order_by('-timestamp')
+    queryset_list = Post.objects.active()  # .order_by('-timestamp')
     if request.user.is_staff or request.user.is_superuser:
-        posts = Post.objects.all()
-    # Se o usuário não tiver autenticado e o post estiver em draft, verá 404
-    else:
-        raise Http404
+        queryset_list = Post.objects.all()
+
     context = {
-        'posts': posts,
+        'posts': queryset_list,
         'today': today,
     }
     return render(request, 'post_list.html', context)
@@ -70,7 +68,7 @@ class PostDetailView(DetailView):
     def get_object(self, *args, **kwargs):
         slug = self.kwargs.get("slug")
         instance = get_object_or_404(Post, slug=slug)
-        if instance.created > timezone.now().date() or instance.draft:
+        if instance.publish > timezone.now().date() or instance.draft:
             if not self.request.user.is_staff or not self.request.user.is_superuser:
                 raise Http404
         return instance

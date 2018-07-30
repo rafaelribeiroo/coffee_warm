@@ -45,7 +45,7 @@ class PostQuerySet(models.query.QuerySet):
         return self.filter(draft=False)
 
     def published(self):
-        return self.filter(created__lte=timezone.now()).not_draft()
+        return self.filter(publish__lte=timezone.now()).not_draft()
 
 
 class PostManager(models.Manager):
@@ -95,9 +95,9 @@ class Post(models.Model):
     )
     content = models.TextField('Conteúdo')
     # Sempre draft, a menos que você indique o contrário
-    draft = models.BooleanField('Rascunho', default=True)
-    read_time = models.CharField(max_length=20, null=True, blank=True)
-    created = models.DateField('Publicação', default=datetime.date.today)
+    draft = models.BooleanField('Rascunho', default=False)
+    read_time = models.CharField('Tempo de leitura', max_length=20, null=True, blank=True)
+    publish = models.DateField('Publicação', default=datetime.date.today)
     updated = models.DateTimeField(
         'Alteração',
         auto_now=True,
@@ -111,10 +111,10 @@ class Post(models.Model):
     objects = PostManager()
 
     def __str__(self):
-        return self.slug + " " + str(self.created)  # return self.title
+        return self.title  # return self.title
 
     class Meta:
-        ordering = ['title']
+        ordering = ['-timestamp', '-updated']
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
@@ -130,12 +130,12 @@ class Post(models.Model):
 
 
 # Função para estimar o tempo de leitura aproximadamente
-@receiver(pre_save, sender=Post)
+"""@receiver(pre_save, sender=Post)
 def CountReadTime(sender, instance, **kwargs):
     if instance is not None:
         content_length = len(instance.content)
         if content_length > 240:
-            minutes = content_length//240
+            minutes = content_length // 240
             if minutes > 15:
                 minutes = 15
             if minutes == 1:
@@ -143,7 +143,7 @@ def CountReadTime(sender, instance, **kwargs):
             else:
                 instance.read_time = '~' + str(minutes) + ' minutos'
         elif content_length < 240:
-            instance.read_time = 'menos que 1 minuto'
+            instance.read_time = 'menos que 1 minuto'"""
 # Fim da função
 
 
@@ -168,5 +168,5 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
         instance.slug = unique_slug_generator(instance)
 
 
-pre_save.connect(CountReadTime, sender=Post)
+# pre_save.connect(CountReadTime, sender=Post)
 pre_save.connect(pre_save_post_receiver, sender=Post)

@@ -14,6 +14,7 @@ class PostForm(forms.ModelForm):
             "content",
             "image",
             "draft",
+            "publish",
             "iframe_youtube",
         ]
 
