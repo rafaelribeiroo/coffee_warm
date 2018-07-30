@@ -9,6 +9,7 @@
 <h1>{{ object.title }} <small>{% if object.draft %}<span style='color:red;'>Draft</span> {% endif %}{{ object.publish }}</small></h1>
 {% if object.user.get_full_name %}
 <p>Author: {{ object.user.get_full_name }}</p>
+<p>Read time: {{ object.read_time }}</p>
 {% endif %}
 
 <hr/>
