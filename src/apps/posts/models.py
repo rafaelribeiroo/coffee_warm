@@ -130,7 +130,7 @@ class Post(models.Model):
 
 
 # Função para estimar o tempo de leitura aproximadamente
-"""@receiver(pre_save, sender=Post)
+@receiver(pre_save, sender=Post)
 def CountReadTime(sender, instance, **kwargs):
     if instance is not None:
         content_length = len(instance.content)
@@ -143,7 +143,7 @@ def CountReadTime(sender, instance, **kwargs):
             else:
                 instance.read_time = '~' + str(minutes) + ' minutos'
         elif content_length < 240:
-            instance.read_time = 'menos que 1 minuto'"""
+            instance.read_time = 'menos que 1 minuto'
 # Fim da função
 
 
@@ -168,5 +168,5 @@ def pre_save_post_receiver(sender, instance, *args, **kwargs):
         instance.slug = unique_slug_generator(instance)
 
 
-# pre_save.connect(CountReadTime, sender=Post)
+pre_save.connect(CountReadTime, sender=Post)
 pre_save.connect(pre_save_post_receiver, sender=Post)
