@@ -8,11 +8,11 @@ from .models import (
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ['title', 'updated', 'read_time']
+    readonly_fields = ['slug']
     list_display_links = ['updated']
     list_editable = ['title']
     list_filter = ['updated', 'timestamp']
     search_fields = ['title', 'content']
-    readonly_fields = ['slug']
     save_on_top = True
 
     class Meta:

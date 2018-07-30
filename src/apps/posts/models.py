@@ -77,6 +77,7 @@ class Post(models.Model):
     )
     title = models.CharField('Título', max_length=120)
     slug = models.SlugField(unique=True, max_length=250)
+    tag = models.ManyToManyField(Tag, related_name='blog', blank=True)
     image = models.ImageField(
         'Imagem',
         upload_to=RandomFileName('imgs_uploaded'),
@@ -96,7 +97,6 @@ class Post(models.Model):
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)
     read_time = models.CharField(max_length=20, null=True, blank=True)
-    tag = models.ManyToManyField(Tag, related_name='blog', blank=True)
     created = models.DateField('Publicação', default=datetime.date.today)
     updated = models.DateTimeField(
         'Alteração',
@@ -135,14 +135,14 @@ def CountReadTime(sender, instance, **kwargs):
     if instance is not None:
         content_length = len(instance.content)
         if content_length > 240:
-            minutes = content_length // 240
+            minutes = content_length//240
             if minutes > 15:
                 minutes = 15
             if minutes == 1:
                 instance.read_time = '~1 minuto'
             else:
                 instance.read_time = '~' + str(minutes) + ' minutos'
-        elif content_length > 240:
+        elif content_length < 240:
             instance.read_time = 'menos que 1 minuto'
 # Fim da função
 
