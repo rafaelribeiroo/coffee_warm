@@ -11,11 +11,12 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = [
             "title",
+            "tag",
+            "iframe_youtube",
             "content",
             "image",
             "draft",
             "publish",
-            "iframe_youtube",
         ]
 
 

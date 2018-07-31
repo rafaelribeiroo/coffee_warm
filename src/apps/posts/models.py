@@ -64,7 +64,7 @@ class Tag(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.title = self.title.lower()
+        self.title = self.title.upper()
         super(Tag, self).save(*args, **kwargs)
 
 
