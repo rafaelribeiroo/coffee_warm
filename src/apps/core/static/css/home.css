@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css?family=Sacramento');
+@font-face {
+	font-family: "GalanoGrotesqueW00-Bold";
+	src: url("https://static2.pickjb.com/assets/fonts/GalanoGrotesqueW00-Bold.eot");
+	src: local("☺︎"), local("Galano Grotesque W00 Bold"), local("GalanoGrotesqueW00-Bold"), url("https://static2.pickjb.com/assets/fonts/GalanoGrotesqueW00-Bold.eot?#iefix") format("embedded-opentype"), url("https://static2.pickjb.com/assets/fonts/GalanoGrotesqueW00-Bold.woff2") format("woff2"), url("https://static2.pickjb.com/assets/fonts/GalanoGrotesqueW00-Bold.woff") format("woff"), url("https://static2.pickjb.com/assets/fonts/GalanoGrotesqueW00-Bold.ttf") format("truetype"), url("https://static2.pickjb.com/assets/fonts/GalanoGrotesqueW00-Bold.svg#GalanoGrotesqueW00-Bold") format("svg");
+	font-weight: 800;
+	font-style: normal;
+	font-display: swap;
+}
+
+:root {
+	-ms-box-sizing: border-box;
+	 -o-box-sizing: border-box;
+	    box-sizing: border-box;
+	/* Bloqueio do usuário copiar os textos */
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+		-ms-user-select: none;
+		 -o-user-select: none;
+		    user-select: none;
+}
+
+.above_the_fold {
+	/*position: relative;*/
+	/*top: 3rem;*/
+	/*left: 0;
+	right: 0;
+	bottom: 3rem;*/
+	display: table;
+	/* width: 100vw; */
+	height: 100vh;
+}
+
+/* Clouds to simule temperature */
+.above_the_fold:before, .above_the_fold:after {
+	position: absolute;
+	content: '';
+	width: 100%;
+	height: 50%;
+	background-size: cover;
+}
+
+.above_the_fold:before {
+	top: 0;
+	left: 0;
+	background-image: url("http://mentalsociety.com/wp-content/uploads/2017/07/clouds-left.png");
+	animation: clouds1 80s linear infinite;
+}
+
+.above_the_fold:after {
+	bottom: 0;
+	left: 0;
+	background-image: url("http://mentalsociety.com/wp-content/uploads/2017/07/clouds-right.png");
+	animation: clouds2 70s linear infinite;
+}
+
+@keyframes clouds1 {
+	to {
+		background-position: 200%;
+	}
+}
+
+@keyframes clouds2 {
+	to {
+		background-position: 200%;
+	}
+}
+
+.waves {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: block;
+	min-width: 100%;
+	min-height: 70%;
+	margin: auto 0;
+}
+
+svg {
+	display: block;
+	overflow: visible;
+	pointer-events: none;
+}
+
+.above_the_fold h1 {
+	position: relative;
+	color: #FFA500;
+	display: table-cell;
+	font-family: "GalanoGrotesqueW00-Bold";
+	font-size: 4em;
+	font-size: 8vmax;
+	font-weight: 800;
+	line-height: 1.2em;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0 .2em;
+	vertical-align: middle;
+	font-display: swap;
+}
+
+.above_the_fold h1 span {
+	font-family: 'Sacramento';
+}

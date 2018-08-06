@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # My apps
     'src.apps.core',
     'src.apps.posts',
+    'src.apps.accounts',
 
     # 3rd libraries
     'markdown_deux',
@@ -138,3 +139,5 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+AUTH_USER_MODEL = 'accounts.MyUser'

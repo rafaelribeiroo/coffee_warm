@@ -11,10 +11,12 @@ run:
 migrate:
 	python manage.py migrate
 	python manage.py migrate posts
+	python manage.py migrate accounts
 	
 migrations:
 	python manage.py makemigrations
 	python manage.py makemigrations posts
+	python manage.py makemigrations accounts
 
 # Criando o super usuário
 user:
