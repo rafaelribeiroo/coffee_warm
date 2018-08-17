@@ -54,7 +54,7 @@ def tag_create(request):
         instance = form.save(commit=False)
         instance.user = request.user
         instance.save()
-        return redirect('post_list')  # Return reverse url
+        return redirect('post:homepage')  # Return reverse url
     return render(request, 'post_form.html', context)
 
 

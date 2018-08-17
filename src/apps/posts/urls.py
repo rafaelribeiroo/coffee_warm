@@ -12,6 +12,6 @@ urlpatterns = [
     path('', post_list, name='homepage'),
     path('posts/redigir/', post_create, name='post_create'),
     re_path(r'^posts/(?P<slug>[\w-]+)/$', PostDetailView.as_view(), name='detail'),
-    path('tag/create/', tag_create, name='tag_create'),
+    path('criar/tag', tag_create, name='tag_create'),
     # re_path(r'^(?P<slug>[\w-]+)/edit/$', post_update, name='update'), Colocar no postdetailview, personalBlog
 ]
