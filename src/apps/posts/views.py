@@ -102,6 +102,6 @@ def post_by_tag(request, tag=None):
     tag = get_object_or_404(Tag, title=tag)
     queryset = tag.blog.all()
     context = {
-        'post_list': queryset,
+        'posts': queryset,
     }
     return render(request, 'post_list.html', context)
