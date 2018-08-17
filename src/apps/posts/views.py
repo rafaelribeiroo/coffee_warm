@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Tag
 from .forms import PostForm, TagForm
 from django.db import transaction
 
@@ -96,3 +96,12 @@ class PostDetailView(DetailView):
         instance = context['object']
         context['share_string'] = quote_plus(instance.content)
         return context
+
+
+def post_by_tag(request, tag=None):
+    tag = get_object_or_404(Tag, title=tag)
+    queryset = tag.blog.all()
+    context = {
+        'post_list': queryset,
+    }
+    return render(request, 'post_list.html', context)
