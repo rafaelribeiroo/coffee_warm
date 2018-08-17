@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, TagForm
+from django.db import transaction
 
 from django.http import Http404, HttpResponseRedirect
 from django.utils import timezone
@@ -37,6 +38,23 @@ def post_create(request):
     context = {
         'form': form,
     }
+    return render(request, 'post_form.html', context)
+
+
+@transaction.atomic
+def tag_create(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    form = TagForm(request.POST or None)
+    context = {
+        'form': form,
+    }
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        return redirect('post_list')  # Return reverse url
     return render(request, 'post_form.html', context)
 
 

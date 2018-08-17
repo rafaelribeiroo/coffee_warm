@@ -12,7 +12,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include((core_urls), namespace='core')),
-    path('posts/', include((posts_urls), namespace='post')),
+    path('', include((posts_urls), namespace='post')),
 ]
 
 if settings.DEBUG is True:
