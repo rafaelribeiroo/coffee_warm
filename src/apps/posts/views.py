@@ -58,7 +58,7 @@ def tag_create(request):
     return render(request, 'post_form.html', context)
 
 
-"""def post_update(request, slug=None):
+def post_update(request, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
     instance = get_object_or_404(Post, slug=slug)
@@ -68,13 +68,12 @@ def tag_create(request):
         instance.save()
         messages.success(request, "<a href='#'>Item</a> Saved", extra_tags='html_safe')
         return HttpResponseRedirect(instance.get_absolute_url())
-
     context = {
         "title": instance.title,
         "instance": instance,
         "form": form,
     }
-    return render(request, "post_form.html", context)"""
+    return render(request, "post_form.html", context)
 
 
 from django.views.generic import DetailView
