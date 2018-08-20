@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 	<p>Criar um novo <a href="{% url 'post:post_create' %}">post</a></p>
+
 	{% for post in posts %}
 		<div class="row">
 			<div class="col-sm-12">
@@ -18,10 +19,10 @@
 
 						<h3>
 							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
-							{% for tag in post.tag.all %}
+							{# <!-- {% for tag in post.tag.all %}
           
-								<a class="text-tag" href="{% url 'post:post_by_tag' tag.title %}">{{ tag }}</a>
-							{% endfor %}
+								<a class="text-tag" href="{% url 'post:post_by_tag' tag.name %}">{{ tag }}</a>
+							{% endfor %} --> #}
 							<small>{{ post.created }}</small>
 							<br>
 							<small>{{ post.read_time }}</small>

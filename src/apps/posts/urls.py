@@ -6,10 +6,12 @@ from .views import (
     PostDetailView,
     tag_create,
     post_by_tag,
+    search_titles,
 )
 
 app_name = 'posts'
 urlpatterns = [
+    path('search/', search_titles, name='buscar_post'),
     path('posts/', post_list, name='homepage'),
     path('posts/redigir/', post_create, name='post_create'),
     re_path(r'^post/(?P<slug>[\w-]+)/$', PostDetailView.as_view(), name='detail'),

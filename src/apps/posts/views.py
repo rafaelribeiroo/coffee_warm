@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from .models import Post, Tag
 from .forms import PostForm, TagForm
 from django.db import transaction
@@ -8,6 +8,17 @@ from django.utils import timezone
 from urllib.parse import quote_plus
 # from django.db import transaction
 from django.contrib import messages
+
+
+def search_titles(request):
+    if request.method == 'POST':
+        search_text = request.POST['search_text']
+    else:
+        search_text = ''
+    articles = Post.objects.filter(title__contains=search_text)
+
+    # from django.shortcuts import render_to_response
+    return render_to_response('ajax_search.html', {'articles': articles})
 
 
 def post_list(request):
@@ -38,23 +49,6 @@ def post_create(request):
     context = {
         'form': form,
     }
-    return render(request, 'post_form.html', context)
-
-
-@transaction.atomic
-def tag_create(request):
-    if not request.user.is_staff or not request.user.is_superuser:
-        raise Http404
-
-    form = TagForm(request.POST or None)
-    context = {
-        'form': form,
-    }
-    if form.is_valid():
-        instance = form.save(commit=False)
-        instance.user = request.user
-        instance.save()
-        return redirect('post:homepage')  # Return reverse url
     return render(request, 'post_form.html', context)
 
 
@@ -95,6 +89,23 @@ class PostDetailView(DetailView):
         instance = context['object']
         context['share_string'] = quote_plus(instance.content)
         return context
+
+
+@transaction.atomic
+def tag_create(request):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+
+    form = TagForm(request.POST or None)
+    context = {
+        'form': form,
+    }
+    if form.is_valid():
+        instance = form.save(commit=False)
+        instance.user = request.user
+        instance.save()
+        return redirect('post:homepage')  # Return reverse url
+    return render(request, 'post_form.html', context)
 
 
 def post_by_tag(request, tag=None):
