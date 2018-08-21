@@ -26,6 +26,12 @@ from django.utils import timezone
 # Import auth
 from django.conf import settings
 
+# Unique slug
+from .utils import unique_slug_generator
+
+# Tag
+from .unique_slug import generate_unique_slug
+
 
 # Métodos para armazenar as imagens com UUID name
 @deconstructible
@@ -58,7 +64,7 @@ class PostManager(models.Manager):
 
 
 class Tag(models.Model):
-    title = models.CharField('Titulo', max_length=50, unique=True)
+    title = models.CharField('Titulo', max_length=50)
     slug = models.SlugField('URL do Titulo', max_length=100, unique=True)
 
     def __str__(self):
@@ -69,7 +75,13 @@ class Tag(models.Model):
 
     def save(self, *args, **kwargs):
         self.title = self.title.upper()
-        self.slug = slugify(self.title)
+        if self.slug:  # edit
+            if slugify(self.title) != self.slug:
+                self.slug = generate_unique_slug(Tag, self.title)
+        else:  # create
+            self.slug = generate_unique_slug(Tag, self.title)
+        # self.slug = slugify(self.title)
+        # Pega o titulo e cria um slug, so nao assegura que o slug seja unico, diferente do Post
         super(Tag, self).save(*args, **kwargs)
 
 
@@ -81,8 +93,8 @@ class Post(models.Model):
         verbose_name='Usuário',
     )
     title = models.CharField('Título', max_length=120)
-    slug = models.SlugField(unique=True, max_length=250)
-    tag = models.ManyToManyField(Tag, related_name='blog', blank=True)
+    slug = models.SlugField('URL do titulo', unique=True, max_length=250)
+    tag = models.ManyToManyField(Tag, related_name='blog', blank=True, verbose_name='Tag correspondente')
     image = models.ImageField(
         'Imagem',
         upload_to=RandomFileName('imgs_uploaded'),
@@ -152,7 +164,7 @@ def CountReadTime(sender, instance, **kwargs):
 
 
 def create_slug(instance, new_slug=None):
-    # Método slugify para o front-end, falta o do admin
+    # Método slugify para o front-end
     slug = slugify(instance.title)
     if new_slug is not None:
         slug = new_slug
@@ -162,9 +174,6 @@ def create_slug(instance, new_slug=None):
         new_slug = "%s-%s" % (slug, qs.first().id)
         return create_slug(instance, new_slug=new_slug)
     return slug
-
-
-from .utils import unique_slug_generator
 
 
 def pre_save_post_receiver(sender, instance, *args, **kwargs):
