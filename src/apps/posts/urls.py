@@ -1,5 +1,6 @@
 from django.urls import path, re_path
 from .views import (
+    search_titles,
     post_list,
     post_create,
     post_update,
@@ -10,6 +11,8 @@ from .views import (
 
 app_name = 'posts'
 urlpatterns = [
+    # Buscar titulos
+    path('buscar/', search_titles, name='buscar'),
     # Listagem de resenhas
     path('posts/', post_list, name='homepage'),
     # Criacao

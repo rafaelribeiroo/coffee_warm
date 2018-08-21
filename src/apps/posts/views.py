@@ -9,6 +9,18 @@ from urllib.parse import quote_plus
 # from django.db import transaction
 from django.contrib import messages
 
+from django.template.context_processors import csrf
+
+
+def search_titles(request):
+    args = {}
+    if request.method == 'POST':
+        search_text = request.POST['search_text']
+        if(search_text != ''):
+            args.update(csrf(request))
+            args['posts'] = Post.objects.filter(title__contains=search_text)
+    return render_to_response('ajax_search.html', args)
+
 
 def post_list(request):
     today = timezone.now().date()

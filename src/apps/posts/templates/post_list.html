@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 	<p>Criar um novo <a href="{% url 'post:post_create' %}">post</a></p>
+
+	{% csrf_token %} 
+	<input type="text" id="search" />
+	<div id="searchbox_container">
+		<div id="searchbox"></div>
+	</div>
+
+	<br><br><br><br><br>
 
 	{% for post in posts %}
 		<div class="row">
