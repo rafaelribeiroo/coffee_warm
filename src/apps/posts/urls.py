@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from .views import (
-    search_titles,
+    SearchSubmitView,
+    SearchAjaxSubmitView,
     post_list,
     post_create,
     post_update,
@@ -12,7 +13,9 @@ from .views import (
 app_name = 'posts'
 urlpatterns = [
     # Buscar titulos
-    path('buscar/', search_titles, name='buscar'),
+    path('search_ajax/', SearchSubmitView.as_view(), name='search-submit'),
+    # Response ajax busca
+    path('search_submit/', SearchAjaxSubmitView.as_view(), name='search-ajax-submit'),
     # Listagem de resenhas
     path('posts/', post_list, name='homepage'),
     # Criacao

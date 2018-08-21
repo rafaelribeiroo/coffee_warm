@@ -3,11 +3,21 @@
 {% block content %}
 	<p>Criar um novo <a href="{% url 'post:post_create' %}">post</a></p>
 
-	{% csrf_token %} 
-	<input type="text" id="search" />
-	<div id="searchbox_container">
-		<div id="searchbox"></div>
-	</div>
+	<form id="form" role="form" action="{% url 'post:search-submit' %}" method="post">
+    {% csrf_token %}
+        <input name="search"
+            id="search"
+            type="search"
+            placeholder="Start typing here"
+            ic-post-to="{% url 'post:search-ajax-submit' %}"
+            ic-trigger-on="keyup changed"
+            ic-trigger-delay="300ms"
+            ic-target="#search-result-container"/>
+        <button type="submit">Buscar</button>
+    </form>
+    <br><br><br><br>
+    <span id="search-result-container"></span>
+
 
 	<br><br><br><br><br>
 
@@ -50,4 +60,7 @@
 			<hr/>
 		</div>
 	{% endfor %}
+
+	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
 {% endblock %}

@@ -11,15 +11,39 @@ from django.contrib import messages
 
 from django.template.context_processors import csrf
 
+# Function Buscar
+from django.views.generic.base import View
+from django.http import HttpResponse
+from django.template import loader
 
-def search_titles(request):
-    args = {}
-    if request.method == 'POST':
-        search_text = request.POST['search_text']
-        if(search_text != ''):
-            args.update(csrf(request))
-            args['posts'] = Post.objects.filter(title__contains=search_text)
-    return render_to_response('ajax_search.html', args)
+# Obtendo a entidade Post
+from .models import Post
+
+
+class SearchSubmitView(View):
+    template = 'search_submit.html'
+    response_message = 'Esta é a solicitação a resposta'
+
+    def post(self, request, *args, **kwargs):
+        template = loader.get_template(self.template)
+        query = request.POST.get('search', '')
+
+        # Uma simples query para os objetos Post que contém 'query'
+        items = Post.objects.filter(title__icontains=query)
+
+        context = {
+            'title': self.response_message,
+            'query': query,
+            'items': items
+        }
+
+        rendered_template = template.render(context, request)
+        return HttpResponse(rendered_template, content_type='text/html')
+
+
+class SearchAjaxSubmitView(SearchSubmitView):
+    template = 'search_results.html'
+    response_message = 'Essa é a resposta em AJAX, vindo direto do banco'
 
 
 def post_list(request):

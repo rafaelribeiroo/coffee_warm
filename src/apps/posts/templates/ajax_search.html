@@ -1,20 +1,23 @@
-{% extends "base.html"  %}
-{% load static %}
+{% extends "base.html" %}
 
 {% block content %}
+	{% csrf_token %} 
+	<h3>Pesquisar</h3>
+	<input type="text" id="search" />
 	<ul class="searchbox_table">
-	{% if posts.count > 0 %}
-	{% for post in posts %}
-		<li id="searched"><a id="searchlink" href="/post/{{ post.slug }}/">
-			{{post.title}}</a>
-		</li>
-	{% endfor %} 
-	{% else %}
-		<li>Sem registros!</li>
-	{% endif %}
 	</ul>
 
-	<script src="{% static 'js/jquery.min.js' %}"></script>
-	<script src="{% static 'js/ajax.js' %}"></script>
-
+{% if posts.count > 0 %}
+	{% for post in posts %}
+		<li id="searched">
+			<a id="searchlink" href="/post/{{ post.slug }}/">
+				{{ post.title }}
+			</a>
+		</li>
+	{% endfor %} 
+{% else %}
+	<li>Sem registros!</li>
+{% endif %}
 {% endblock content %}
+
+

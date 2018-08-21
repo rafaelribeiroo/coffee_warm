@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Search Results</title>
+    </head>
+    <body>
+        {% if query %}
+            {% include 'search_results.html' %}
+        {% else %}
+            <h1 class="h3">Nothing found. <br>Try entering another search term.</h1>
+        {% endif %}
+    </body>
+</html>

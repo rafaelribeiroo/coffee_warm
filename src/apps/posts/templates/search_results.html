@@ -1,0 +1,15 @@
+{% if query %}
+    <h3>Você buscou por: <i>{{ query }}</i></h3>
+    <p>{{ title }}</p>
+    {% if items %}
+        <ul>
+        {% for post in items %}
+            <li><a id="searchlink" href="/post/{{ post.slug }}/">
+				{{ post.title }}
+			</a></li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+
+{% endif %}
