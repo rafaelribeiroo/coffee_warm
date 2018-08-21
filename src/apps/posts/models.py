@@ -58,13 +58,18 @@ class PostManager(models.Manager):
 
 
 class Tag(models.Model):
-    title = models.CharField(max_length=50)
+    title = models.CharField('Titulo', max_length=50, unique=True)
+    slug = models.SlugField('URL do Titulo', max_length=100, unique=True)
 
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('post:homepage', args=[self.slug])  # homepage
+
     def save(self, *args, **kwargs):
         self.title = self.title.upper()
+        self.slug = slugify(self.title)
         super(Tag, self).save(*args, **kwargs)
 
 
@@ -81,8 +86,7 @@ class Post(models.Model):
     image = models.ImageField(
         'Imagem',
         upload_to=RandomFileName('imgs_uploaded'),
-        null=True,
-        blank=True,
+        blank=False,
         width_field="width_field",
         height_field="height_field",
     )

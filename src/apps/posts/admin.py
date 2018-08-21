@@ -7,7 +7,7 @@ from .models import (
 
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
-    list_display = ['title', 'updated', 'read_time']
+    list_display = ['title', 'slug', 'updated', 'read_time']
     readonly_fields = ['slug', 'read_time']
     list_display_links = ['updated']
     list_editable = ['title']
@@ -21,7 +21,8 @@ class PostModelAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagModelAdmin(admin.ModelAdmin):
-    list_display = ['title']
+    list_display = ['title', 'slug',]
+    readonly_fields = ['slug',]
     # list_display_links = ['title']
     # list_editable = ['title']
     # list_filter = ['title']

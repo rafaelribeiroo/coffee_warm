@@ -1,0 +1,42 @@
+{% extends "base.html"  %}
+
+{% block title %}
+    {{ tag|title }} - {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="section-inner clearfix">
+            <h4>All the posts tagged with - {{ tag.title }}</h4>
+             {% for post in posts %}
+            <div class="thumbnail">
+                    {% if post.image %}
+                        <img src='{{ post.image.url }}' class='img-responsive' />
+                    {% endif %}
+                    <div class="caption">
+                        {% if post.draft %}
+                            <h3 style="color: red">Staff only: Draft</h3>
+                        {% endif %} 
+                        {% if post.created > today %}
+                            <h3>Staff Only: Future Post</h3>
+                        {% endif %}
+
+                        <h3>
+                            <a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
+                            <small>{{ post.created }}</small>
+                            <br>
+                            <small>{{ post.read_time }}</small>
+                        </h3>
+                        {% if post.user.get_full_name %}
+                            <p>Author: {{ post.user.get_full_name }}</p>
+                        {% endif %}
+                        {% if user.is_authenticated %}
+                            <p>seu email e {{ user.email }}</p>                         
+                        {% endif %}
+                        <p>{{ post.content|linebreaks|truncatechars:120 }}</p>
+                        <p><a href="{{ post.get_absolute_url }}">Visualizar</a></p>
+                    </div>
+        {% endfor %}
+        </div>
+    </div>         
+{% endblock %}
