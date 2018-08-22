@@ -2,6 +2,7 @@
 
 
 {% block content %}
+<script src='https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js'></script>
 
 <h1>Preview</h1>
 <hr/>
@@ -62,13 +63,7 @@ $(document).ready(function(){
         var newContent = $(this).val()
         setTitle(newContent)
     })
-
-    $(".comment-reply-btn").click(function(event){
-        event.preventDefault();
-        $(this).parent().next(".comment-reply").fadeToggle();
-    })
-})
+});
 
 </script>
-
 {% endblock content %}
