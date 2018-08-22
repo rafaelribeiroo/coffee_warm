@@ -36,12 +36,14 @@
 							<h3>Staff Only: Future Post</h3>
 						{% endif %}
 
+						
+						<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
+						<br><br> <span>Todas tags</span><br>
+						{% for tag in post.tag.all %}
+      
+							<a class="text-tag" href="{% url 'post:post_by_tag' tag.slug %}">{{ tag }}</a>
+						{% endfor %}
 						<h3>
-							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
-							{% for tag in post.tag.all %}
-          
-								<a class="text-tag" href="{% url 'post:post_by_tag' tag.slug %}">{{ tag }}</a>
-							{% endfor %}
 							<small>{{ post.created }}</small>
 							<br>
 							<small>{{ post.read_time }}</small>

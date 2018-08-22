@@ -3,7 +3,7 @@ from .views import (
     home,
 )
 
-app_name = 'core'
+app_name = 'utils'
 urlpatterns = [
     path('', home, name='homepage'),
 ]

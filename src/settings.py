@@ -46,8 +46,11 @@ INSTALLED_APPS = [
     'src.apps.accounts',
 
     # 3rd libraries
+    # read_time
     'markdown_deux',
+    # editor WYSIWYG
     'pagedown',
+    'avatar',
 ]
 
 MIDDLEWARE = [
@@ -136,6 +139,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
