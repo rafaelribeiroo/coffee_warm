@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load avatar_tags %}
+
 {% block content %}
 	<p>Criar um novo <a href="{% url 'post:post_create' %}">post</a></p>
 
@@ -51,6 +53,7 @@
 						{% if post.user.get_full_name %}
 							<p>Author: {{ post.user.get_full_name }}</p>
 						{% endif %}
+						{% avatar user 200 class="" %}
 						{% if user.is_authenticated %}
 							<p>seu email e {{ user.email }}</p>							
 						{% endif %}

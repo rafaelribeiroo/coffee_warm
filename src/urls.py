@@ -11,6 +11,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('avatar/', include('avatar.urls')),
     path('', include((core_urls), namespace='utils')),
     path('', include((posts_urls), namespace='post')),
 ]

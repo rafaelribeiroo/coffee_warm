@@ -10,6 +10,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
+            "user",
             "title",
             "tag",
             "iframe_youtube",
