@@ -23,49 +23,74 @@
 
 	<br><br><br><br><br>
 
-	{% for post in posts %}
-		<div class="row">
-			<div class="col-sm-12">
-				<div class="thumbnail">
-					{% if post.image %}
-						<img src='{{ post.image.url }}' class='img-responsive' />
-					{% endif %}
-					<div class="caption">
-						{% if post.draft %}
-							<h3 style="color: red">Staff only: Draft</h3>
-						{% endif %} 
-						{% if post.created > today %}
-							<h3>Staff Only: Future Post</h3>
+	<div class="infinite-container">
+		{% for post in posts %}
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="thumbnail">
+						{% if post.image %}
+							<img src='{{ post.image.url }}' class='img-responsive' />
 						{% endif %}
+						<div class="caption">
+							{% if post.draft %}
+								<h3 style="color: red">Staff only: Draft</h3>
+							{% endif %}
+							{% if post.publish > today %}
+								<h3>Futuro post</h3>
+							{% endif %}
 
-						
-						<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
-						<br><br> <span>Todas tags</span><br>
-						{% for tag in post.tag.all %}
-      
-							<a class="text-tag" href="{% url 'post:post_by_tag' tag.slug %}">{{ tag }}</a>
-						{% endfor %}
-						<h3>
-							<small>{{ post.created }}</small>
-							<br>
-							<small>{{ post.read_time }}</small>
-						</h3>
-						{% if post.user.get_full_name %}
-							<p>Author: {{ post.user.get_full_name }}</p>
-						{% endif %}
-						{% avatar user 200 class="" %}
-						{% if user.is_authenticated %}
-							<p>seu email e {{ user.email }}</p>							
-						{% endif %}
-						<p>{{ post.content|linebreaks|truncatechars:120 }}</p>
-						<p><a href="{{ post.get_absolute_url }}">Visualizar</a></p>
+
+							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
+							<br><br> <span>Todas tags</span><br>
+							{% for tag in post.tag.all %}
+
+								<a class="text-tag" href="{% url 'post:post_by_tag' tag.slug %}">{{ tag.title }}</a>
+							{% endfor %}
+							<h3>
+								<small>{{ post.created }}</small>
+								<br>
+								<small>{{ post.read_time }}</small>
+							</h3>
+							{% if post.user.get_full_name %}
+								<p>Author: {{ post.user.get_full_name }}</p>
+							{% endif %}
+							{% avatar user 200 %}
+							{% if user.is_authenticated %}
+								<p>seu email e {{ user.email }}</p>
+							{% endif %}
+							<p>{{ post.content|linebreaks|truncatechars:120 }}</p>
+						</div>
 					</div>
 				</div>
+				<hr/>
 			</div>
-			<hr/>
-		</div>
-	{% endfor %}
+			<br><br><br><br><br>
+		{% endfor %}
+	</div>
+
+	{% if posts.has_next %}
+		<a class="infinite-more-link" href="?page={{ posts.next_page_number }}">Mais</a>
+	{% endif %}
+
+	<div class="loading" style="display: none;">
+		Loading...
+	</div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
+	<!-- Paginação -->
+	<script src="{% static 'js/waypoint.js' %}"></script>
+	<script src="{% static 'js/infinite.min.js' %}"></script>
+
+	<script type="text/javascript">
+		var infinite = new Waypoint.Infinite({
+			element: $('.infinite-container')[0],
+			onBeforePageLoad: function () {
+				$('.loading').show();
+			},
+			onAfterPageLoad: function ($items) {
+				$('.loading').hide();
+			}
+		});
+	</script>
 {% endblock %}

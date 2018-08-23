@@ -71,7 +71,7 @@ class Tag(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post:homepage', args=[self.slug])  # homepage
+        return reverse('post:post_by_tag', args=[self.slug])  # homepage
 
     def save(self, *args, **kwargs):
         self.title = self.title.upper()
@@ -94,7 +94,7 @@ class Post(models.Model):
     )
     title = models.CharField('Título', max_length=120)
     slug = models.SlugField('URL do titulo', unique=True, max_length=250)
-    tag = models.ManyToManyField(Tag, related_name='blog', blank=True, verbose_name='Tag correspondente')
+    tag = models.ManyToManyField(Tag, related_name='blog', verbose_name='Tag correspondente')
     image = models.ImageField(
         'Imagem',
         upload_to=RandomFileName('imgs_uploaded'),

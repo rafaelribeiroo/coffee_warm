@@ -24,4 +24,4 @@ class PostForm(forms.ModelForm):
 class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
-        fields = ['title']
+        fields = ['title']  # 'slug'

@@ -1,4 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect, render_to_response, get_list_or_404
+from django.shortcuts import (
+    render,
+    get_object_or_404,
+    redirect,
+    get_list_or_404
+)
 from .models import Post, Tag
 from .forms import PostForm, TagForm
 from django.db import transaction
@@ -9,15 +14,13 @@ from urllib.parse import quote_plus
 # from django.db import transaction
 from django.contrib import messages
 
-from django.template.context_processors import csrf
 
 # Function Buscar
 from django.views.generic.base import View
 from django.http import HttpResponse
 from django.template import loader
 
-# Obtendo a entidade Post
-from .models import Post
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 
 class SearchSubmitView(View):
@@ -34,7 +37,7 @@ class SearchSubmitView(View):
         context = {
             'title': self.response_message,
             'query': query,
-            'items': items
+            'items': items,
         }
 
         rendered_template = template.render(context, request)
@@ -47,14 +50,29 @@ class SearchAjaxSubmitView(SearchSubmitView):
 
 
 def post_list(request):
+    # Se a publicação do post for amanhã, printa: "futuro post"
     today = timezone.now().date()
+    # print(today)
+    # print(today)  # Tenho que passar isso pro timezone BR pra funcionar la no template
     queryset_list = Post.objects.active()  # .order_by('-timestamp')
     if request.user.is_staff or request.user.is_superuser:
         queryset_list = Post.objects.all()
+    # A partir de 5 posts, inicia a paginação
+    paginator = Paginator(queryset_list, 5)
+
+    page = request.GET.get('page', 1)
+    try:
+        numbers = paginator.page(page)
+    except PageNotAnInteger:
+        numbers = paginator.page(1)
+    except EmptyPage:
+        numbers = paginator.page(paginator.num_pages)
 
     context = {
-        'posts': queryset_list,
+        # 'posts': queryset_list,
         'today': today,
+        # Paginação
+        'posts': numbers,
     }
     return render(request, 'post_list.html', context)
 
@@ -66,8 +84,9 @@ def post_create(request):
     form = PostForm(request.POST or None, request.FILES or None)
     if form.is_valid():
         instance = form.save(commit=False)
-        instance.user = request.user
+        # instance.user = request.user
         instance.save()
+        form.save_m2m()
         # Message Success
         messages.success(request, "Criado com sucesso")
         return HttpResponseRedirect(instance.get_absolute_url())
@@ -85,6 +104,7 @@ def post_update(request, slug=None):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
+        instance.save_m2m()
         messages.success(request, "<a href='#'>Item</a> Saved", extra_tags='html_safe')
         return HttpResponseRedirect(instance.get_absolute_url())
     context = {
@@ -92,7 +112,7 @@ def post_update(request, slug=None):
         "instance": instance,
         "form": form,
     }
-    return render(request, "post_form.html", context)
+    return render(request, "post_update.html", context)
 
 
 from django.views.generic import DetailView
@@ -116,7 +136,16 @@ class PostDetailView(DetailView):
         return context
 
 
-@transaction.atomic
+def post_delete(request, slug=None):
+    if not request.user.is_staff or not request.user.is_superuser:
+        raise Http404
+    instance = get_object_or_404(Post, slug=slug)
+    instance.delete()
+    messages.success(request, "Successfully deleted")
+    return redirect('post:homepage')
+
+
+"""@transaction.atomic
 def tag_create(request):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -129,8 +158,8 @@ def tag_create(request):
         instance = form.save(commit=False)
         instance.user = request.user
         instance.save()
-        return redirect('post:homepage')  # Return reverse url
-    return render(request, 'post_form.html', context)
+        return redirect('utils:homepage')  # Return reverse url
+    return render(request, 'post_form.html', context)"""
 
 
 '''def post_by_tag(request, tag=None):
