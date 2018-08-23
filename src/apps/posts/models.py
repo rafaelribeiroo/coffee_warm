@@ -144,6 +144,12 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post:detail", kwargs={"slug": self.slug})  # Criar o detalhe antes
 
+    def save(self):
+        slug = slugify(self.title)
+        if self.slug != slug:
+            self.slug = slug
+        return super(Post, self).save()
+
 
 # Função para estimar o tempo de leitura aproximadamente
 @receiver(pre_save, sender=Post)
