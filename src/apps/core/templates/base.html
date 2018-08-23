@@ -5,13 +5,13 @@
 	<title>{% block title %}{% endblock %}</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+	<script src="{% static 'js/jquery.min.js' %}"></script>
 	{% block head %}{% endblock %}
 </head>
 <body>
 	{% block content %}{% endblock %}
 
+	
 	{% block js %}{% endblock %}
-	<script src="{% static 'js/jquery.min.js' %}"></script>
-	<script src="{% static 'js/ajax.js' %}"></script>
 </body>
 </html>

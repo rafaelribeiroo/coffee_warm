@@ -2,6 +2,10 @@
 {% load static %}
 {% load avatar_tags %}
 
+{% block head %}
+	
+{% endblock %}
+
 {% block content %}
 	<p>Criar um novo <a href="{% url 'post:post_create' %}">post</a></p>
 
@@ -35,7 +39,7 @@
 							{% if post.draft %}
 								<h3 style="color: red">Staff only: Draft</h3>
 							{% endif %}
-							{% if post.publish > today %}
+							{% if post.publish|date:"d/m/Y" > today|date:"d/m/Y" %}
 								<h3>Futuro post</h3>
 							{% endif %}
 
@@ -76,21 +80,19 @@
 		Loading...
 	</div>
 
-	<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
 	<!-- Paginação -->
-	<script src="{% static 'js/waypoint.js' %}"></script>
+	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 	<script src="{% static 'js/infinite.min.js' %}"></script>
-
 	<script type="text/javascript">
-		var infinite = new Waypoint.Infinite({
-			element: $('.infinite-container')[0],
-			onBeforePageLoad: function () {
-				$('.loading').show();
-			},
-			onAfterPageLoad: function ($items) {
-				$('.loading').hide();
-			}
-		});
+	var infinite = new Waypoint.Infinite({
+		element: $('.infinite-container')[0],
+		onBeforePageLoad: function () {
+			$('.loading').show();
+		},
+		onAfterPageLoad: function ($items) {
+			$('.loading').hide();
+		}
+	});
 	</script>
 {% endblock %}

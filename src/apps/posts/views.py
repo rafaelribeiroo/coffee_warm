@@ -52,11 +52,10 @@ class SearchAjaxSubmitView(SearchSubmitView):
 def post_list(request):
     # Se a publicação do post for amanhã, printa: "futuro post"
     today = timezone.now().date()
-    # print(today)
-    # print(today)  # Tenho que passar isso pro timezone BR pra funcionar la no template
     queryset_list = Post.objects.active()  # .order_by('-timestamp')
     if request.user.is_staff or request.user.is_superuser:
         queryset_list = Post.objects.all()
+
     # A partir de 5 posts, inicia a paginação
     paginator = Paginator(queryset_list, 5)
 
@@ -69,10 +68,10 @@ def post_list(request):
         numbers = paginator.page(paginator.num_pages)
 
     context = {
-        # 'posts': queryset_list,
         'today': today,
-        # Paginação
         'posts': numbers,
+        # 'posts': queryset_list,
+        # Paginação
     }
     return render(request, 'post_list.html', context)
 
