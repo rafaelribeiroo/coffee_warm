@@ -29,7 +29,7 @@
 
 	<div class="infinite-container">
 		{% for post in posts %}
-			<div class="row">
+			<div class="row infinite-item">
 				<div class="col-sm-12">
 					<div class="thumbnail">
 						{% if post.image %}
@@ -80,19 +80,10 @@
 		Loading...
 	</div>
 
-    <script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
-	<!-- Paginação -->
-	<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-	<script src="{% static 'js/infinite.min.js' %}"></script>
-	<script type="text/javascript">
-	var infinite = new Waypoint.Infinite({
-		element: $('.infinite-container')[0],
-		onBeforePageLoad: function () {
-			$('.loading').show();
-		},
-		onAfterPageLoad: function ($items) {
-			$('.loading').hide();
-		}
-	});
-	</script>
+	{% block js %}
+		<script type="text/javascript" src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/infinite.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+	{% endblock %}
+
 {% endblock %}
