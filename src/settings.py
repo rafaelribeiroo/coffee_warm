@@ -146,6 +146,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'accounts.User'
 
-DATE_INPUT_FORMATS = [
-    '%d/%m/%y',
-]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = config_decouple('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config_decouple('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+
+DEFAULT_FROM_EMAIL = config_decouple('DEFAULT_FROM_EMAIL')
+
+DOMAIN = '127.0.0.1:8000'
