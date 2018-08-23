@@ -1,17 +1,30 @@
 from django.shortcuts import (
+    # Maioria das respostas dos métodos
     render,
+    # Se não houver um objeto, apresenta 404
     get_object_or_404,
+    # Após efetuar tal transação, redireciona a tal template
     redirect,
+    # Lista de tag, ou 404
     get_list_or_404
 )
+# Importando as entidades do DB, referenciar
 from .models import Post, Tag
+# Importando os forms, trabalhar com DML
 from .forms import PostForm, TagForm
+# Com o decorador transaction.atomic, vai executar a transação no bd
+# apenas se o método produzir uma resposta sem erros
 from django.db import transaction
-
+# Se um usuário anônimo tentar abrir a URL criar/post apresenta 404
+# HttpResponseRedirect para tratar os "get_absolute_url"
 from django.http import Http404, HttpResponseRedirect
+# timezone, se a publicação do post for superior a data atual,
+# será incluído em: "Posts futuros"
 from django.utils import timezone
+# Ele pega o conteúdo do atributo e substitui todos os
+# caracteres especiais para o conteúdo ser mantido
 from urllib.parse import quote_plus
-# from django.db import transaction
+# Mensagens nativas do django quando um evento ocorre
 from django.contrib import messages
 
 
@@ -76,6 +89,7 @@ def post_list(request):
     return render(request, 'post_list.html', context)
 
 
+@transaction.atomic
 def post_create(request):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -95,6 +109,7 @@ def post_create(request):
     return render(request, 'post_form.html', context)
 
 
+@transaction.atomic
 def post_update(request, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -103,7 +118,7 @@ def post_update(request, slug=None):
     if form.is_valid():
         instance = form.save(commit=False)
         instance.save()
-        instance.save_m2m()
+        form.save_m2m()
         messages.success(request, "<a href='#'>Item</a> Saved", extra_tags='html_safe')
         return HttpResponseRedirect(instance.get_absolute_url())
     context = {
@@ -144,7 +159,7 @@ def post_delete(request, slug=None):
     return redirect('post:homepage')
 
 
-"""@transaction.atomic
+@transaction.atomic
 def tag_create(request):
     if not request.user.is_staff or not request.user.is_superuser:
         raise Http404
@@ -158,16 +173,7 @@ def tag_create(request):
         instance.user = request.user
         instance.save()
         return redirect('utils:homepage')  # Return reverse url
-    return render(request, 'post_form.html', context)"""
-
-
-'''def post_by_tag(request, tag=None):
-    tag = get_object_or_404(Tag, title=tag)
-    queryset = tag.blog.all()
-    context = {
-        'posts': queryset,
-    }
-    return render(request, 'post_list.html', context)'''
+    return render(request, 'post_form.html', context)
 
 
 def post_by_tag(request, tag_slug):

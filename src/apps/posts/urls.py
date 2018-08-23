@@ -7,7 +7,7 @@ from .views import (
     post_update,
     PostDetailView,
     post_delete,
-    # tag_create,
+    tag_create,
     post_by_tag,
 )
 
@@ -22,13 +22,13 @@ urlpatterns = [
     # Criacao
     path('posts/redigir/', post_create, name='post_create'),
     # Detalhes
-    re_path(r'^post/(?P<slug>[\w-]+)/$', PostDetailView.as_view(), name='detail'),
+    path('post/<slug>/', PostDetailView.as_view(), name='detail'),
     # Edicao
-    re_path(r'^post/(?P<slug>[\w-]+)/editar/$', post_update, name='update'),
+    path('post/<slug>/editar/', post_update, name='update'),
     # Exclusao
-    re_path(r'^(?P<slug>[\w-]+)/excluir/$', post_delete, name='delete'),
+    path('<slug>/excluir/', post_delete, name='delete'),
     # Criacao de tag
-   # path('criar/tag/', tag_create, name='tag_create'),
+    path('criar/tag/', tag_create, name='tag_create'),
     # Resenhas por tag
-    re_path(r'^post/tag=(?P<tag_slug>[\w-]+)/$', post_by_tag, name='post_by_tag'),
+    path('post/tag=<slug:tag_slug>/', post_by_tag, name='post_by_tag'),
 ]
