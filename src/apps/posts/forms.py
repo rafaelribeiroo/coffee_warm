@@ -32,3 +32,8 @@ class SubscriberForm(forms.ModelForm):
     class Meta:
         model = Subscriber
         fields = ['first_name', 'email_address']
+
+
+class UnsubscribeForm(forms.Form):
+    # Define o formulario para os incritos se desinscreverem
+    email_address = forms.EmailField()

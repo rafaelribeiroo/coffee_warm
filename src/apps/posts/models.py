@@ -37,6 +37,8 @@ from django.core.mail import send_mass_mail
 from src import settings
 from django.shortcuts import redirect
 
+from .unsubscribe_link import generate_unsubscribe_link
+
 
 # Métodos para armazenar as imagens com UUID name
 @deconstructible
@@ -174,8 +176,8 @@ class Post(models.Model):
     def create_subscriber_notification_email(subscriber):
         message_content = "Check out Catarse newest insights at " + settings.DOMAIN + reverse('post:homepage') + " !"
         # message_content = "Check out Catarse newest insights at 127.0.0.1"
-        footer = "Se você gostaria de se desinscrever, vá até o devido link: "  # \
-                 # + utils.generate_unsubscribe_link(subscriber.email_address)
+        footer = "Se você gostaria de se desinscrever, vá até o devido link: "\
+                 + generate_unsubscribe_link(subscriber.email_address)
         message = "Caro {name},\r\n{message_content}\r\n\r\n{footer}".format(name=subscriber.first_name,
                                                                              # Var acima, mensagem a ser enviada
                                                                              message_content=message_content,

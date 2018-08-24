@@ -9,9 +9,9 @@ from django.shortcuts import (
     get_list_or_404
 )
 # Importando as entidades do DB, referenciar
-from .models import Post, Tag
+from .models import Post, Tag, Subscriber
 # Importando os forms, trabalhar com DML
-from .forms import PostForm, TagForm, SubscriberForm
+from .forms import PostForm, TagForm, SubscriberForm, UnsubscribeForm
 # Com o decorador transaction.atomic, vai executar a transação no bd
 # apenas se o método produzir uma resposta sem erros
 from django.db import transaction
@@ -34,6 +34,11 @@ from django.http import HttpResponse
 from django.template import loader
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from .unsubscribe_link import generate_unsubscribe_link
+from django.core.signing import Signer, BadSignature
+import base64
+from django.core.mail import send_mail
 
 
 class SearchSubmitView(View):
@@ -198,3 +203,55 @@ def subscribe(request):
     else:
         subscribe_form = SubscriberForm()
         return render(request, "subscribe.html", {"subscribe_form": subscribe_form})
+
+
+def unsubscribe_request(request):
+    """ Renderiza um formulario que permite os inscritos se desinscreverem """
+    if request.method == "POST":
+        form = UnsubscribeForm(request.POST)
+        error_message = ""
+        status = 400
+        if form.is_valid():
+            subscriber_email = form.cleaned_data["email_address"]
+            try:
+                Subscriber.objects.get(email_address=subscriber_email)
+                unsubscribe_link = generate_unsubscribe_link(subscriber_email)
+                unsubscribe_email_message = "Favor, navegue ate o seguinte link para se desinscrever:\r\n" + unsubscribe_link
+                send_mail("Link para se desinscrever", unsubscribe_email_message, "Catarse Literaria <enquantoesquentaocafe@gmail.com>",
+                          recipient_list=[subscriber_email])
+                message = "Um email foi enviado para " + subscriber_email + " contendo o link para se desinscrever do meu blog."
+                return render(request, "unsubscribe_result.html", {"message": message})
+            except Subscriber.DoesNotExist:
+                error_message = "Desculpe, o email informado nao foi encontrado em nossa lista de inscritos."
+                status = 404
+
+        # else if form is not valid, return with error messages
+        return render(request, "unsubscribe_request.html",
+                      {"unsubscribe_form": form, "error_message": error_message}, status=status)
+    else:
+        form = UnsubscribeForm()
+        return render(request, "unsubscribe_request.html", {"unsubscribe_form": form})
+
+
+def blog_unsubscribe(request, unsubscribe_token):
+    """ Desinscreve um inscrito se a requisicao conter um token valido"""
+    status = 200
+    padded_token = unsubscribe_token + ("=" * (4 - len(unsubscribe_token) % 4))
+    token_bytes = padded_token.encode("UTF-8")
+    decoded = base64.b64decode(token_bytes)
+    signer = Signer(salt="unsubscribe")
+    subscriber_email = ""
+    try:
+        subscriber_email = signer.unsign(decoded.decode("UTF-8"))
+        Subscriber.objects.get(email_address=subscriber_email).delete()
+        message = subscriber_email + " foi desinscrito com sucesso."
+    except Subscriber.DoesNotExist:
+        message = subscriber_email + " ja estava desinscrito. Nenhuma acao foi tomada."
+        status = 404
+    except BadSignature:
+        message = "Nos desculpe, porem esta URL nao foi reconhecida."
+        status = 404
+    except UnicodeDecodeError:
+        message = "Nos desculpe, porem esta URL nao foi reconhecida."
+        status = 404
+    return render(request, "unsubscribe_result.html", {"message": message}, status=status)

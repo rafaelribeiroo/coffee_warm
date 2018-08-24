@@ -10,6 +10,8 @@ from .views import (
     tag_create,
     post_by_tag,
     subscribe,
+    unsubscribe_request,
+    blog_unsubscribe,
 )
 
 app_name = 'posts'
@@ -34,4 +36,6 @@ urlpatterns = [
     path('post/tag=<slug:tag_slug>/', post_by_tag, name='post_by_tag'),
     # Inscrever para receber notificacoes
     path('subscribe/', subscribe, name='blog_subscribe'),
+    path('unsubscribe/', unsubscribe_request, name='unsubscribe_request'),
+    path('unsubscribe/<str:unsubscribe_token>', blog_unsubscribe, name='unsubscribe'),
 ]

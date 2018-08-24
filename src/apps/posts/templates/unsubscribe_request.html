@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+	{% if error_message %}
+		<p>{{ error_message }}</p>
+    {% endif %}
+
+	<form action="/unsubscribe/" method="POST">
+		{% csrf_token %}
+		<table>
+			{{ unsubscribe_form }}
+		</table>
+		<input type="submit" value="Unsubscribe"/>
+	</form>
+{% endblock %}
