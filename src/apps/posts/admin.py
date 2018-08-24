@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (
     Post,
     Tag,
+    Subscriber,
 )
 
 
@@ -21,8 +22,8 @@ class PostModelAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagModelAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug',]
-    readonly_fields = ['slug',]
+    list_display = ['title', 'slug']
+    readonly_fields = ['slug']
     # list_display_links = ['title']
     # list_editable = ['title']
     # list_filter = ['title']
@@ -30,3 +31,11 @@ class TagModelAdmin(admin.ModelAdmin):
 
     class Meta:
         model = Tag
+
+
+@admin.register(Subscriber)
+class SubscriberModelAdmin(admin.ModelAdmin):
+    list_display = ['first_name', 'email_address']
+
+    class Meta:
+        model = Subscriber

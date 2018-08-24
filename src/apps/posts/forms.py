@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Tag
+from .models import Post, Tag, Subscriber
 
 from pagedown.widgets import PagedownWidget
 
@@ -25,3 +25,10 @@ class TagForm(forms.ModelForm):
     class Meta:
         model = Tag
         fields = ['title']  # 'slug'
+
+
+class SubscriberForm(forms.ModelForm):
+    # Define o formulario para os leitores se inscrever no blog
+    class Meta:
+        model = Subscriber
+        fields = ['first_name', 'email_address']

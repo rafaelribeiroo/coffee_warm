@@ -11,7 +11,7 @@ from django.shortcuts import (
 # Importando as entidades do DB, referenciar
 from .models import Post, Tag
 # Importando os forms, trabalhar com DML
-from .forms import PostForm, TagForm
+from .forms import PostForm, TagForm, SubscriberForm
 # Com o decorador transaction.atomic, vai executar a transação no bd
 # apenas se o método produzir uma resposta sem erros
 from django.db import transaction
@@ -106,7 +106,7 @@ def post_create(request):
     context = {
         'form': form,
     }
-    return render(request, 'post_form.html', context)
+    return render(request, 'post_create.html', context)
 
 
 @transaction.atomic
@@ -173,7 +173,7 @@ def tag_create(request):
         instance.user = request.user
         instance.save()
         return redirect('utils:homepage')  # Return reverse url
-    return render(request, 'post_form.html', context)
+    return render(request, 'tag_create.html', context)
 
 
 def post_by_tag(request, tag_slug):
@@ -184,3 +184,17 @@ def post_by_tag(request, tag_slug):
         'posts': queryset,
     }
     return render(request, 'post_by_tag.html', context)
+
+
+def subscribe(request):
+    """Renderiza um formulario que habilita os leitores a se inscreverem"""
+    if request.method == "POST":
+        form = SubscriberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "subscribe_success.html", request.POST, status=201)
+        else:
+            return render(request, "subscribe.html", {"subscribe_form":form})
+    else:
+        subscribe_form = SubscriberForm()
+        return render(request, "subscribe.html", {"subscribe_form": subscribe_form})

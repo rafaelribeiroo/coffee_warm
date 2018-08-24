@@ -9,6 +9,7 @@ from .views import (
     post_delete,
     tag_create,
     post_by_tag,
+    subscribe,
 )
 
 app_name = 'posts'
@@ -31,4 +32,6 @@ urlpatterns = [
     path('criar/tag/', tag_create, name='tag_create'),
     # Resenhas por tag
     path('post/tag=<slug:tag_slug>/', post_by_tag, name='post_by_tag'),
+    # Inscrever para receber notificacoes
+    path('subscribe/', subscribe, name='blog_subscribe'),
 ]

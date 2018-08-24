@@ -32,6 +32,11 @@ from .utils import unique_slug_generator
 # Tag
 from .unique_slug import generate_unique_slug
 
+# Notify subscriber
+from django.core.mail import send_mass_mail
+from src import settings
+from django.shortcuts import redirect
+
 
 # Métodos para armazenar as imagens com UUID name
 @deconstructible
@@ -144,11 +149,47 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse("post:detail", kwargs={"slug": self.slug})  # Criar o detalhe antes
 
-    def save(self):
+    def save(self, *args, **kwargs):
         slug = slugify(self.title)
         if self.slug != slug:
             self.slug = slug
-        return super(Post, self).save()
+        if self._state.adding:
+            self.notify_subscribers()
+        return super(Post, self).save(*args, **kwargs)
+
+    def notify_subscribers(self):
+        subject = "Novo post em Catarse Literária sobre" + self.title
+
+        emails = tuple(
+            (subject,
+             Post.create_subscriber_notification_email(subscriber),
+             # "Rafael Ribeiro <pereiraribeirorafael@gmail.com>",
+             settings.DEFAULT_FROM_EMAIL,
+             [subscriber.email_address])
+            for subscriber in Subscriber.objects.all())
+
+        send_mass_mail(emails)
+
+    @staticmethod
+    def create_subscriber_notification_email(subscriber):
+        message_content = "Check out Catarse newest insights at " + settings.DOMAIN + reverse('post:homepage') + " !"
+        # message_content = "Check out Catarse newest insights at 127.0.0.1"
+        footer = "Se você gostaria de se desinscrever, vá até o devido link: "  # \
+                 # + utils.generate_unsubscribe_link(subscriber.email_address)
+        message = "Caro {name},\r\n{message_content}\r\n\r\n{footer}".format(name=subscriber.first_name,
+                                                                             # Var acima, mensagem a ser enviada
+                                                                             message_content=message_content,
+                                                                             # Ultima var
+                                                                             footer=footer)
+        return message
+
+
+class Subscriber(models.Model):
+    first_name = models.CharField('Primeiro nome', max_length=200)
+    email_address = models.EmailField('Endereco de e-mail', unique=True)
+
+    def __str__(self):
+        return self.first_name
 
 
 # Função para estimar o tempo de leitura aproximadamente

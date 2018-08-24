@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+    <form action="/subscribe/" method="POST">
+        {% csrf_token %}
+        <table>
+            {{ subscribe_form }}
+        </table>
+        <input type="submit" name="" value="Inscrever">
+    </form>
+{% endblock %}
