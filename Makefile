@@ -29,3 +29,12 @@ shell:
 # Coletando os arquivos estáticos de todas apps para um único diretório
 staticfiles:
 	python manage.py collectstatic
+
+# Limpar os registros do banco
+delete:
+	python manage.py sqlflush
+
+remove_migrations:
+	# find . -type d -name 'migrations' -prune -exec rm -rf {} \;
+	cd /src/apps/accounts && rm -rf migrations
+	cd /src/apps/posts && rm -rf migrations

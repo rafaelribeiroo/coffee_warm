@@ -33,8 +33,9 @@ class UserAdmin(BaseUserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'is_bot_flag', 'password1', 'password2')}
+            'fields': ('email', 'first_name', 'last_name', 'avatar', 'password1', 'password2')}
         ),
     )
+
 
 admin.site.register(User, UserAdmin)

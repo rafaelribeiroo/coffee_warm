@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     # editor WYSIWYG
     'pagedown',
     # avatar pros user
-    'avatar',
+    'imagekit',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +156,9 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = config_decouple('DEFAULT_FROM_EMAIL')
 
 DOMAIN = '127.0.0.1:8000'
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'avatar': {'size': (50, 50), 'crop': True},
+    },
+}
