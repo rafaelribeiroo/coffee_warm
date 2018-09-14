@@ -70,6 +70,7 @@ class SearchAjaxSubmitView(SearchSubmitView):
 def post_list(request):
     # Se a publicação do post for amanhã, printa: "futuro post"
     today = timezone.now().date()
+    num_posts = len(Post.objects.all())
     queryset_list = Post.objects.active()  # .order_by('-timestamp')
     if request.user.is_staff or request.user.is_superuser:
         queryset_list = Post.objects.all()
@@ -88,6 +89,7 @@ def post_list(request):
     context = {
         'today': today,
         'posts': numbers,
+        'num_posts': num_posts,
         # 'posts': queryset_list,
         # Paginação
     }
