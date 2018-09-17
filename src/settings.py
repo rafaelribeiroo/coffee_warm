@@ -156,9 +156,12 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = config_decouple('DEFAULT_FROM_EMAIL')
 
 DOMAIN = '127.0.0.1:8000'
+DOMAIN_POSTS = '127.0.0.1:8000/posts/'
 
 THUMBNAIL_ALIASES = {
     '': {
         'avatar': {'size': (50, 50), 'crop': True},
     },
 }
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True

@@ -104,7 +104,11 @@ class Post(models.Model):
     )
     title = models.CharField('Título', max_length=120)
     slug = models.SlugField('URL do titulo', unique=True, max_length=250)
-    tag = models.ManyToManyField(Tag, related_name='blog', verbose_name='Tag correspondente')
+    tag = models.ManyToManyField(
+        Tag,
+        related_name='blog',
+        verbose_name='Tag correspondente'
+    )
     image = models.ImageField(
         'Imagem',
         upload_to=RandomFileName('imgs_uploaded'),
@@ -122,7 +126,12 @@ class Post(models.Model):
     content = models.TextField('Conteúdo')
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)
-    read_time = models.CharField('Tempo de leitura', max_length=20, null=True, blank=True)
+    read_time = models.CharField(
+        'Tempo de leitura',
+        max_length=20,
+        null=True,
+        blank=True
+    )
     publish = models.DateField('Publicação', default=datetime.date.today)
     updated = models.DateTimeField(
         'Alteração',
@@ -155,9 +164,9 @@ class Post(models.Model):
         return reverse("post:detail", kwargs={"slug": self.slug})  # Criar o detalhe antes
 
     def save(self, *args, **kwargs):
-        slug = slugify(self.title)
-        if self.slug != slug:
-            self.slug = slug
+        # slug = slugify(self.title)
+        # if self.slug != slug:
+        #    self.slug = slug
         if self.draft is False:
             self.notify_subscribers()
         return super(Post, self).save(*args, **kwargs)
@@ -165,7 +174,7 @@ class Post(models.Model):
     def notify_subscribers(self):
         subject = "Novo post em 'Catarse Literária' sobre: " + self.title
         from_email = settings.DEFAULT_FROM_EMAIL
-        link_to_our_page = settings.DOMAIN + reverse('post:homepage')
+        link_to_review = settings.DOMAIN_POSTS + self.slug
         for recipient in Subscriber.objects.all():
             context = {
                 'person': recipient.first_name,
@@ -173,7 +182,7 @@ class Post(models.Model):
                 'unsubscribe': generate_unsubscribe_link(
                     recipient.email_address
                 ),
-                'link': link_to_our_page,
+                'link': link_to_review,
             }
             recipes = [recipient.email_address]
             html_content = render_to_string('mail.html', context)
