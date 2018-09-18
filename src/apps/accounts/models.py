@@ -40,6 +40,7 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
+    username = models.CharField('Username', max_length=55, unique=True)
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -59,7 +60,7 @@ class User(AbstractBaseUser):
     objects = MyUserManager()
 
     USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['username']
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
