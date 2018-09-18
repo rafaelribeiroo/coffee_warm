@@ -115,7 +115,7 @@ class Post(models.Model):
     )
     image = models.ImageField(
         'Imagem',
-        upload_to=RandomFileName('imgs_uploaded'),
+        upload_to=RandomFileName('imgs_uploaded/'),
         blank=False,
         width_field="width_field",
         height_field="height_field",
