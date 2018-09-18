@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load imagekit %}
+{% load hitcount_tags %}
+{% get_hit_count_js_variables for post as hitcount %}
 
 
 {% block head %}
@@ -46,6 +48,9 @@
 
 
 							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
+							<div class="stats">
+								<span>{{ post.get_num_view }} views</span>
+							</div>
 							<br><br> <span>Todas tags</span><br>
 							{% for tag in post.tag.all %}
 

@@ -52,6 +52,8 @@ INSTALLED_APPS = [
     'pagedown',
     # avatar pros user
     'imagekit',
+    # Qntas visualizacoes
+    'hitcount',
 ]
 
 MIDDLEWARE = [
@@ -164,4 +166,7 @@ THUMBNAIL_ALIASES = {
     },
 }
 
-IMPORT_EXPORT_USE_TRANSACTIONS = True
+HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
+HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
+HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 5}
+HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}

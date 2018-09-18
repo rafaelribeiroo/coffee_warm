@@ -42,6 +42,10 @@ from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
+# Total views
+from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation
+
 
 # Métodos para armazenar as imagens com UUID name
 @deconstructible
@@ -124,6 +128,7 @@ class Post(models.Model):
         default="ala/ii22"
     )
     content = models.TextField('Conteúdo')
+
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)
     read_time = models.CharField(
@@ -141,6 +146,9 @@ class Post(models.Model):
         'Tempo recorrente',
         auto_now=False,
         auto_now_add=True)
+    hit_count_generic = GenericRelation(
+        HitCount, object_id_field='object_pk',
+        related_query_name='hit_count')
 
     # Lidando com o draft e post
     objects = PostManager()
@@ -158,6 +166,18 @@ class Post(models.Model):
     def get_markdown(self):
         content = self.content
         return mark_safe(markdown(content))
+
+    # Get the total number of views from post
+    def get_num_view(self):
+        obj = HitCount.objects.get(object_pk=self.pk)
+        if obj is not None:
+            return obj.hits
+        else:
+            return 0
+
+    def as_json(self):
+        return dict(
+            title=self.title, num_view=self.get_num_view())
 
     # Função para "slugifar" o front-end
     def get_absolute_url(self):

@@ -1,11 +1,11 @@
-from django.urls import path, re_path
+from django.urls import path
 from .views import (
     SearchSubmitView,
     SearchAjaxSubmitView,
     post_list,
     post_create,
     post_update,
-    PostDetailView,
+    post_detail,
     post_delete,
     tag_create,
     post_by_tag,
@@ -25,7 +25,7 @@ urlpatterns = [
     # Criacao
     path('posts/redigir/', post_create, name='post_create'),
     # Detalhes
-    path('post/<slug>/', PostDetailView.as_view(), name='detail'),
+    path('post/<slug>/', post_detail, name='detail'),
     # Edicao
     path('post/<slug>/editar/', post_update, name='update'),
     # Exclusao
@@ -36,6 +36,8 @@ urlpatterns = [
     path('post/tag=<slug:tag_slug>/', post_by_tag, name='post_by_tag'),
     # Inscrever para receber notificacoes
     path('subscribe/', subscribe, name='blog_subscribe'),
+    # Pagina de requisicao de unsubscribe
     path('unsubscribe/', unsubscribe_request, name='unsubscribe_request'),
+    # Unsubscribe com sucesso
     path('unsubscribe/<str:unsubscribe_token>', blog_unsubscribe, name='unsubscribe'),
 ]
