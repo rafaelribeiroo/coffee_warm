@@ -24,8 +24,8 @@ tions:
 
 off_tions:
 	# find . -type d -name 'migrations' -prune -exec rm -rf {} \;
-	cd /src/apps/accounts && rm -rf migrations
-	cd /src/apps/posts && rm -rf migrations
+	cd src/apps/accounts && rm -rf migrations
+	cd src/apps/posts && rm -rf migrations
 
 # Criando o super usuário
 user:
