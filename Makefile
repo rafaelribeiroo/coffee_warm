@@ -1,3 +1,6 @@
+# First of all
+# alias m='make'
+
 # Remover os caches que o PY gera
 clean:
 	find . -type d -name '__pycache__' -prune -exec rm -rf {} \;
@@ -5,18 +8,23 @@ clean:
 
 # Rodando em todos os pc's conectados na mesma rede
 run:
-	python manage.py runserver 127.0.0.1:8000
+	python manage.py runserver localhost:8000
 
 # Migração de banco de dados
-migrate:
+te:
 	python manage.py migrate
 	python manage.py migrate posts
 	python manage.py migrate accounts
 	
-migrations:
+tions:
 	python manage.py makemigrations
 	python manage.py makemigrations posts
 	python manage.py makemigrations accounts
+
+off_tions:
+	# find . -type d -name 'migrations' -prune -exec rm -rf {} \;
+	cd /src/apps/accounts && rm -rf migrations
+	cd /src/apps/posts && rm -rf migrations
 
 # Criando o super usuário
 user:
@@ -31,10 +39,5 @@ staticfiles:
 	python manage.py collectstatic
 
 # Limpar os registros do banco
-delete:
+del:
 	python manage.py sqlflush
-
-remove_migrations:
-	# find . -type d -name 'migrations' -prune -exec rm -rf {} \;
-	cd /src/apps/accounts && rm -rf migrations
-	cd /src/apps/posts && rm -rf migrations
