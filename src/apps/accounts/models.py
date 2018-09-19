@@ -9,8 +9,12 @@ from django.core.mail import send_mail
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 
+from django.core import validators
+from re import compile
+from django.utils import timezone
 
-class MyUserManager(BaseUserManager):
+
+class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
         """
         Creates and saves a User with the given email, avatar and password.
@@ -40,7 +44,13 @@ class MyUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    username = models.CharField('Username', max_length=55, unique=True)
+    username = models.CharField(
+        'Username',
+        max_length=15,
+        unique=True,
+        help_text='Required. 15 characters or fewer. Letters, numbers and @/./+/-/_ characters',
+        validators=[ validators.RegexValidator(compile('^[\w.@+-]+$'), ('Enter a valid username.'), ('invalid'))]
+    )
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -49,18 +59,22 @@ class User(AbstractBaseUser):
     first_name = models.CharField('Primeiro nome', max_length=30, blank=True)
     last_name = models.CharField('Ultimo nome', max_length=30, blank=True)
     date_joined = models.DateTimeField('Data de entrada', auto_now_add=True)
-    avatar = models.ImageField(upload_to='avatars')
+    avatar = models.ImageField(upload_to='avatars/')
     avatar_thumbnail = ImageSpecField(source='avatar',
                                       processors=[ResizeToFill(100, 50)],
                                       format='JPEG',
                                       options={'quality': 60})
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+    date_joined = models.DateTimeField(
+        'Date Joined',
+        default=timezone.now,
+    )
 
-    objects = MyUserManager()
+    objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    # REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.email
