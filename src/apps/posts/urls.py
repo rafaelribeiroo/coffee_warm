@@ -25,15 +25,15 @@ urlpatterns = [
     # Criacao
     path('posts/redigir/', post_create, name='post_create'),
     # Detalhes
-    path('post/<slug>/', post_detail, name='detail'),
+    path('post/<int:day>/<int:month>/<int:year>/<str:slug>', post_detail, name='detail'),
     # Edicao
-    path('post/<slug>/editar/', post_update, name='update'),
+    path('post/<str:slug>/editar/', post_update, name='update'),
     # Exclusao
-    path('<slug>/excluir/', post_delete, name='delete'),
+    path('<str:slug>/excluir/', post_delete, name='delete'),
     # Criacao de tag
     path('criar/tag/', tag_create, name='tag_create'),
     # Resenhas por tag
-    path('post/tag=<slug:tag_slug>/', post_by_tag, name='post_by_tag'),
+    path('posts/tag=<str:tag_slug>/', post_by_tag, name='post_by_tag'),
     # Inscrever para receber notificacoes
     path('subscribe/', subscribe, name='blog_subscribe'),
     # Pagina de requisicao de unsubscribe

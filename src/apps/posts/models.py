@@ -179,9 +179,16 @@ class Post(models.Model):
         return dict(
             title=self.title, num_view=self.get_num_view())
 
-    # Função para "slugifar" o front-end
     def get_absolute_url(self):
-        return reverse("post:detail", kwargs={"slug": self.slug})  # Criar o detalhe antes
+        return reverse(
+            "post:detail",
+            kwargs={
+                "slug": self.slug,
+                "year": self.publish.year,
+                "month": self.publish.month,
+                "day": self.publish.day
+            }
+        )
 
     def save(self, *args, **kwargs):
         # slug = slugify(self.title)
@@ -194,7 +201,7 @@ class Post(models.Model):
     def notify_subscribers(self):
         subject = "Novo post em 'Catarse Literária' sobre: " + self.title
         from_email = settings.DEFAULT_FROM_EMAIL
-        link_to_review = settings.DOMAIN_POSTS + self.slug
+        link_to_review = settings.DOMAIN + self.publish.day + '/' + self.publish.month + '/' + self.publish.year + '/' + self.slug
         for recipient in Subscriber.objects.all():
             context = {
                 'person': recipient.first_name,
@@ -214,33 +221,6 @@ class Post(models.Model):
             )
             msg.attach_alternative(html_content, "text/html")
             msg.send()
-
-
-    """def notify_subscribers(self):
-                    subject = "Novo post em: 'Catarse Literária' sobre: " + self.title
-
-                    emails = tuple(
-                        (subject,
-                         Post.create_subscriber_notification_email(subscriber),
-                         # "Rafael Ribeiro <pereiraribeirorafael@gmail.com>",
-                         settings.DEFAULT_FROM_EMAIL,
-                         [subscriber.email_address])
-                        for subscriber in Subscriber.objects.all())
-
-                    send_mass_mail(emails)
-
-                @staticmethod
-                def create_subscriber_notification_email(subscriber):
-                    message_content = "Check out Catarse newest insights at " + settings.DOMAIN + reverse('post:homepage') + " !"
-                    # message_content = "Check out Catarse newest insights at 127.0.0.1"
-                    footer = "Se você gostaria de se desinscrever, vá até o devido link: "\
-                             + generate_unsubscribe_link(subscriber.email_address)
-                    message = "Caro {name},\r\n{message_content}\r\n\r\n{footer}".format(name=subscriber.first_name,
-                                                                                         # Var acima, mensagem a ser enviada
-                                                                                         message_content=message_content,
-                                                                                         # Ultima var
-                                                                                         footer=footer)
-                    return message"""
 
 
 class Subscriber(models.Model):

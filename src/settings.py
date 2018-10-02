@@ -135,7 +135,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -157,8 +157,7 @@ EMAIL_PORT = 587
 
 DEFAULT_FROM_EMAIL = config_decouple('DEFAULT_FROM_EMAIL')
 
-DOMAIN = '127.0.0.1:8000'
-DOMAIN_POSTS = '127.0.0.1:8000/posts/'
+DOMAIN = '127.0.0.1:8000/post/'
 
 THUMBNAIL_ALIASES = {
     '': {

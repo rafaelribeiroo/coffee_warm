@@ -136,8 +136,14 @@ def post_update(request, slug=None):
     return render(request, "post_update.html", context)
 
 
-def post_detail(request, slug=None):
-    instance = get_object_or_404(Post, slug=slug)
+def post_detail(request, year, month, day, slug=None):
+    instance = get_object_or_404(
+        Post,
+        publish__year=year,
+        publish__month=month,
+        publish__day=day,
+        slug=slug,
+    )
     if instance.publish > timezone.now().date() or instance.draft:
         if not request.user.is_staff or not request.user.is_superuser:
             raise Http404

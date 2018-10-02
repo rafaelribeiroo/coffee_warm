@@ -42,3 +42,14 @@ staticfiles:
 # Limpar os registros do banco
 del:
 	python manage.py sqlflush
+
+# Exportando base de dados
+dump:
+	python manage.py dumpdata --all --natural --indent=4 > db_dump.json
+
+load:
+	python manage.py loaddata db_dump.json  # database=production
+
+
+comments_off:
+	sed '/^[[:blank:]]*#/d;s/#.*//' **/*.py 

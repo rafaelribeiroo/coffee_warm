@@ -47,6 +47,7 @@
 							{% endif %}
 
 
+							{# <a href="{% url 'post:detail' year=post.publish.year month=post.publish.month day=post.publish.day slug=post.slug %}">{{ post.title }}</a> #}
 							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
 							<div class="stats">
 								<span>
