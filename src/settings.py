@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     # avatar pros user
     'imagekit',
     # Qntas visualizacoes
-    # 'hitcount',
+    'hitcount',
 
     # My apps
     'src.apps.core',
@@ -135,7 +135,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True  # False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -166,7 +166,7 @@ THUMBNAIL_ALIASES = {
     },
 }
 
-'''HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
+HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
 HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
-HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 5}'''
-# HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}
+HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 5}
+HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}

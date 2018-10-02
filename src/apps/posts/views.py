@@ -42,6 +42,8 @@ from django.core.signing import Signer, BadSignature
 import base64
 from django.core.mail import send_mail
 
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 
 class SearchSubmitView(View):
     template = 'search_submit.html'
@@ -158,9 +160,14 @@ class PostDetailView(DetailView):
                 raise Http404
         return instance
 
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(PostDetailView, cls).as_view(**initkwargs)
+        return ensure_csrf_cookie(view)
+
     def get_context_data(self, *args, **kwargs):
         context = super(PostDetailView, self).get_context_data(*args, **kwargs)
-        instance = context['object']
+        instance = context['post']
         context['share_string'] = quote_plus(instance.content)
         return context
 

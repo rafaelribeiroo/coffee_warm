@@ -1,24 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load urlify %}
+{% load hitcount_tags %}
+{% get_hit_count_js_variables for post as hitcount %}
+{% get_hit_count for post as total_hits %}
 
 {% block content %}
+
+<span>{{ total_hits }} views</span>
+
 <br><br>
 <div class='col-sm-6 col-sm-offset-3'>
-    {% if object.image %}
-    <img src='{{ object.image.url }}' class='img-responsive' />
+    {% if post.image %}
+    <img src='{{ post.image.url }}' class='img-responsive' />
     {% endif %}
-<h1>{{ object.title }} <small>
-	{% if object.draft %}
+<h1>{{ post.title }} <small>
+	{% if post.draft %}
 	<span style='color:red;'>Draft</span> 
 {% endif %}
 <br>
-{{ object.publish }}</small></h1>
-<h3><small>Tempo decorrido apos a publicacao > </small>{{ object.timestamp|timesince }}</h3>
-{% if object.user.get_full_name %}
+{{ post.publish }}</small></h1>
+<h3><small>Tempo decorrido apos a publicacao > </small>{{ post.timestamp|timesince }}</h3>
+{% if post.user.get_full_name %}
 
-<p>Author: {{ object.user.get_full_name }}</p>
-<p>Read time: {{ object.read_time }}</p>
+<p>Author: {{ post.user.get_full_name }}</p>
+<p>Read time: {{ post.read_time }}</p>
 {% endif %}
 
 <hr/>
@@ -27,14 +33,14 @@
 
 <div class='row'>
 <div class='col-sm-12'>
-{{ object.content|linebreaks }}
+{{ post.content|linebreaks }}
 
 <hr/>
 <br/>
 
 {% if user.is_authenticated %}
-	<a href="{% url 'post:update' object.slug %}">Alterar</a>
-	<a href="{% url 'post:delete' object.slug %}">Excluir</a>
+	<a href="{% url 'post:update' post.slug %}">Alterar</a>
+	<a href="{% url 'post:delete' post.slug %}">Excluir</a>
 {% endif %}
 
 </div>
@@ -61,5 +67,18 @@
 {% endblock content %}
 
 {% block js %}
-
+    <script src="{% static 'js/jquery.postcsrf.js' %}"></script>
+    {% get_hit_count_js_variables for post as hitcount %}
+    <script type="text/javascript">
+        jQuery(document).ready(function($) {
+            $.postCSRF("{{ hitcount.ajax_url }}", { hitcountPK : "{{ hitcount.pk }}" })
+            .done(function(data){
+                $('<i />').text(data.hit_counted).attr('id','hit-counted-value').appendTo('#hit-counted');
+                $('#hit-response').text(data.hit_message);
+            }).fail(function(data){
+                console.log('POST failed');
+                console.log(data);
+            });
+        });
+    </script>
 {% endblock %}

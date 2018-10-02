@@ -42,8 +42,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 # Total views
-'''from hitcount.models import HitCountMixin, HitCount
-from django.contrib.contenttypes.fields import GenericRelation'''
+from hitcount.models import HitCount
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 # Métodos para armazenar as imagens com UUID name
@@ -139,9 +139,11 @@ class Post(models.Model):  # HitCountMixin
         'Tempo recorrente',
         auto_now=False,
         auto_now_add=True)
-    '''hit_count_generic = GenericRelation(
-                    HitCount, object_id_field='object_pk',
-                    related_query_name='hit_count')'''
+    hit_count_generic = GenericRelation(
+        HitCount,
+        object_id_field='object_pk',
+        related_query_name='hit_count_generic_relation',
+    )
 
     # Lidando com o draft e post
     objects = PostManager()
