@@ -4,7 +4,7 @@
     {% if items %}
         <ul>
         {% for post in items %}
-            <li><a id="searchlink" href="/post/{{ post.slug }}/">
+            <li><a id="searchlink" href="{{post.get_absolute_url}}">
                 {{ post.title }}
             </a></li>
             <li>
