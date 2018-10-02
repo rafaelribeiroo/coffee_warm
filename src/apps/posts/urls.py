@@ -5,7 +5,7 @@ from .views import (
     post_list,
     post_create,
     post_update,
-    post_detail,
+    PostDetailView,
     post_delete,
     tag_create,
     post_by_tag,
@@ -23,9 +23,9 @@ urlpatterns = [
     # Listagem de resenhas
     path('posts/', post_list, name='homepage'),
     # Criacao
-    path('posts/redigir/', post_create, name='post_create'),
+    path('posts/redigir/', post_create, name='create'),
     # Detalhes
-    path('post/<int:day>/<int:month>/<int:year>/<str:slug>', post_detail, name='detail'),
+    path('post/<int:day>/<int:month>/<int:year>/<str:slug>', PostDetailView.as_view(), name='detail'),
     # Edicao
     path('post/<str:slug>/editar/', post_update, name='update'),
     # Exclusao

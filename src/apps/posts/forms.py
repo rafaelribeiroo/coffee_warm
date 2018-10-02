@@ -13,7 +13,6 @@ class PostForm(forms.ModelForm):
             "user",
             "title",
             "tag",
-            "iframe_youtube",
             "content",
             "image",
             "draft",

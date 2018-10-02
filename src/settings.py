@@ -40,11 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # My apps
-    'src.apps.core',
-    'src.apps.posts',
-    'src.apps.accounts',
-
     # 3rd libraries
     # read_time
     'markdown_deux',
@@ -53,7 +48,12 @@ INSTALLED_APPS = [
     # avatar pros user
     'imagekit',
     # Qntas visualizacoes
-    'hitcount',
+    # 'hitcount',
+
+    # My apps
+    'src.apps.core',
+    'src.apps.posts',
+    'src.apps.accounts',
 ]
 
 MIDDLEWARE = [
@@ -135,7 +135,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True  # False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -157,7 +157,8 @@ EMAIL_PORT = 587
 
 DEFAULT_FROM_EMAIL = config_decouple('DEFAULT_FROM_EMAIL')
 
-DOMAIN = '127.0.0.1:8000/post/'
+DOMAIN = '127.0.0.1:8000'
+DOMAIN_DETAIL = '127.0.0.1:8000/post/'
 
 THUMBNAIL_ALIASES = {
     '': {
@@ -165,7 +166,7 @@ THUMBNAIL_ALIASES = {
     },
 }
 
-HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
+'''HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
 HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
-HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 5}
-HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}
+HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 5}'''
+# HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}

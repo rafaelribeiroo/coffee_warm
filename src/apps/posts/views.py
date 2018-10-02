@@ -33,6 +33,8 @@ from django.views.generic.base import View
 from django.http import HttpResponse
 from django.template import loader
 
+from django.views.generic import DetailView
+
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .unsubscribe_link import generate_unsubscribe_link
@@ -136,7 +138,33 @@ def post_update(request, slug=None):
     return render(request, "post_update.html", context)
 
 
-def post_detail(request, year, month, day, slug=None):
+class PostDetailView(DetailView):
+    template_name = 'post_detail.html'
+
+    def get_object(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        year = self.kwargs.get("year")
+        month = self.kwargs.get("month")
+        day = self.kwargs.get("day")
+        instance = get_object_or_404(
+            Post,
+            publish__year=year,
+            publish__month=month,
+            publish__day=day,
+            slug=slug,
+        )
+        if instance.publish > timezone.now().date() or instance.draft:
+            if not self.request.user.is_staff or not self.request.user.is_superuser:
+                raise Http404
+        return instance
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(PostDetailView, self).get_context_data(*args, **kwargs)
+        instance = context['object']
+        context['share_string'] = quote_plus(instance.content)
+        return context
+
+'''def post_detail(request, year, month, day, slug=None):
     instance = get_object_or_404(
         Post,
         publish__year=year,
@@ -156,7 +184,7 @@ def post_detail(request, year, month, day, slug=None):
         "share_string": share_string,
     }
     return render(request, "post_detail.html", context)
-
+'''
 
 def post_delete(request, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:

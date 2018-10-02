@@ -1,27 +1,24 @@
 {% extends 'base.html' %}
-{% load hitcount_tags %}
+{% load static %}
 {% load urlify %}
 
-{% block head %}
-	{{title}}
-{% endblock %}
-
 {% block content %}
-<p>{{ hitcount.total_hits }}</p>
+<br><br>
 <div class='col-sm-6 col-sm-offset-3'>
-    {% if instance.image %}
-    <img src='{{ instance.image.url }}' class='img-responsive' />
+    {% if object.image %}
+    <img src='{{ object.image.url }}' class='img-responsive' />
     {% endif %}
-<h1>{{ instance.title }} <small>
-	{% if instance.draft %}
+<h1>{{ object.title }} <small>
+	{% if object.draft %}
 	<span style='color:red;'>Draft</span> 
 {% endif %}
-{{ instance.publish }}</small></h1>
-<h3><small>Tempo decorrido apos a publicacao > </small>{{ instance.timestamp|timesince }}</h3>
-{% if instance.user.get_full_name %}
+<br>
+{{ object.publish }}</small></h1>
+<h3><small>Tempo decorrido apos a publicacao > </small>{{ object.timestamp|timesince }}</h3>
+{% if object.user.get_full_name %}
 
-<p>Author: {{ instance.user.get_full_name }}</p>
-<p>Read time: {{ instance.read_time }}</p>
+<p>Author: {{ object.user.get_full_name }}</p>
+<p>Read time: {{ object.read_time }}</p>
 {% endif %}
 
 <hr/>
@@ -30,15 +27,14 @@
 
 <div class='row'>
 <div class='col-sm-12'>
-
-{{ instance.content|linebreaks }}
+{{ object.content|linebreaks }}
 
 <hr/>
 <br/>
 
 {% if user.is_authenticated %}
-	<a href="{% url 'post:update' instance.slug %}">Alterar</a>
-	<a href="{% url 'post:delete' instance.slug %}">Excluir</a>
+	<a href="{% url 'post:update' object.slug %}">Alterar</a>
+	<a href="{% url 'post:delete' object.slug %}">Excluir</a>
 {% endif %}
 
 </div>
@@ -63,3 +59,7 @@
 
 
 {% endblock content %}
+
+{% block js %}
+
+{% endblock %}

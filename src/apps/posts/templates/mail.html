@@ -72,7 +72,11 @@
                                 </tr>
                                 <tr>
                                     <td class="link" style="font-family: Ubuntu, Verdana, sans-serif, monospace; color: #333; text-indent: 50px; text-align: justify; font-size: 16px; line-height: 22px;">
-                                        {{ link }}
+                                        {% for link in links  %}
+                                            {% if forloop.first %}
+                                                <a href="SITE.COM{{ link.get_absolute_url }}">Clique aqui</a>
+                                            {% endif %}
+                                        {% endfor %}
                                     </td>
                                 </tr>
                                 <tr>

@@ -1,17 +1,10 @@
 {% extends 'base.html' %}
-{% load static %}
 {% load imagekit %}
-{% load hitcount_tags %}
-{% get_hit_count_js_variables for post as hitcount %}
+{% load static %}
 
-
-{% block head %}
-	
-{% endblock %}
 
 {% block content %}
-	<p>Criar um novo <a href="{% url 'post:post_create' %}">post</a></p>
-
+	<p>Criar um novo <a href="{% url 'post:create' %}">post</a></p>
 	<form id="form" role="form" action="{% url 'post:search-submit' %}" method="post">
     {% csrf_token %}
         <input name="search"
@@ -32,6 +25,7 @@
 	<h1>Atualmente, temos {{ num_posts }} resenhas em nosso blog.</h1>
 	<div class="infinite-container">
 		{% for post in posts %}
+
 			<div class="row infinite-item">
 				<div class="col-sm-12">
 					<div class="thumbnail">
@@ -49,15 +43,9 @@
 
 							{# <a href="{% url 'post:detail' year=post.publish.year month=post.publish.month day=post.publish.day slug=post.slug %}">{{ post.title }}</a> #}
 							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>
-							<div class="stats">
-								<span>
-									{% if post.get_num_view == 1 %}
-										{{ post.get_num_view }} Visualizacao</span>
-									{% else %}
-										{{ post.get_num_view }} Visualizacoes</span>
-									{% endif %}
-								
-							</div>
+
+
+
 							<br><br> <span>Todas tags</span><br>
 							{% for tag in post.tag.all %}
 

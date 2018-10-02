@@ -33,7 +33,6 @@ from .utils import unique_slug_generator
 from .unique_slug import generate_unique_slug
 
 # Notify subscriber
-from django.core.mail import send_mass_mail
 from src import settings
 
 from .unsubscribe_link import generate_unsubscribe_link
@@ -43,8 +42,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 
 # Total views
-from hitcount.models import HitCountMixin, HitCount
-from django.contrib.contenttypes.fields import GenericRelation
+'''from hitcount.models import HitCountMixin, HitCount
+from django.contrib.contenttypes.fields import GenericRelation'''
 
 
 # Métodos para armazenar as imagens com UUID name
@@ -99,7 +98,7 @@ class Tag(models.Model):
         super(Tag, self).save(*args, **kwargs)
 
 
-class Post(models.Model):
+class Post(models.Model):  # HitCountMixin
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         default=1,
@@ -122,13 +121,7 @@ class Post(models.Model):
     )
     width_field = models.IntegerField('Largura da imagem', default=0)
     height_field = models.IntegerField('Altura', default=0)
-    iframe_youtube = models.CharField(
-        'Link do Youtube',
-        max_length=50,
-        default="ala/ii22"
-    )
     content = models.TextField('Conteúdo')
-
     # Sempre draft, a menos que você indique o contrário
     draft = models.BooleanField('Rascunho', default=True)
     read_time = models.CharField(
@@ -146,9 +139,9 @@ class Post(models.Model):
         'Tempo recorrente',
         auto_now=False,
         auto_now_add=True)
-    hit_count_generic = GenericRelation(
-        HitCount, object_id_field='object_pk',
-        related_query_name='hit_count')
+    '''hit_count_generic = GenericRelation(
+                    HitCount, object_id_field='object_pk',
+                    related_query_name='hit_count')'''
 
     # Lidando com o draft e post
     objects = PostManager()
@@ -168,16 +161,16 @@ class Post(models.Model):
         return mark_safe(markdown(content))
 
     # Get the total number of views from post
-    def get_num_view(self):
-        obj = HitCount.objects.get(object_pk=self.pk)
-        if obj is not None:
-            return obj.hits
-        else:
-            return 0
+    '''def get_num_view(self):
+                    obj = HitCount.objects.get(object_pk=self.pk)
+                    if obj is not None:
+                        return obj.hits
+                    else:
+                        return 0
 
-    def as_json(self):
-        return dict(
-            title=self.title, num_view=self.get_num_view())
+                def as_json(self):
+                    return dict(
+                        title=self.title, num_view=self.get_num_view())'''
 
     def get_absolute_url(self):
         return reverse(
@@ -201,7 +194,8 @@ class Post(models.Model):
     def notify_subscribers(self):
         subject = "Novo post em 'Catarse Literária' sobre: " + self.title
         from_email = settings.DEFAULT_FROM_EMAIL
-        link_to_review = settings.DOMAIN + self.publish.day + '/' + self.publish.month + '/' + self.publish.year + '/' + self.slug
+        # link_to_review = settings.DOMAIN_DETAIL + str(self.publish.day) + '/' + str(self.publish.month) + '/' + str(self.publish.year) + '/' + self.slug
+        link_to_review = Post.objects.all().order_by('-id')
         for recipient in Subscriber.objects.all():
             context = {
                 'person': recipient.first_name,
@@ -209,7 +203,8 @@ class Post(models.Model):
                 'unsubscribe': generate_unsubscribe_link(
                     recipient.email_address
                 ),
-                'link': link_to_review,
+                'links': link_to_review,
+                'domain': settings.DOMAIN,
             }
             recipes = [recipient.email_address]
             html_content = render_to_string('mail.html', context)
