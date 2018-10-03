@@ -2,10 +2,11 @@
 {% load static %}
 {% load urlify %}
 {% load hitcount_tags %}
+{% block content %}
+
+
 {% get_hit_count_js_variables for post as hitcount %}
 {% get_hit_count for post as total_hits %}
-
-{% block content %}
 
 <span>{{ total_hits }} views</span>
 
@@ -54,7 +55,7 @@
 <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">Facebook</a>
 <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}">Twitter</a>
 <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}">Google+</a>
-<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}/&title={{ object.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}">Linkedin</a>
+<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}/&title={{ post.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}">Linkedin</a>
 
 <div
     class="fb-comments"

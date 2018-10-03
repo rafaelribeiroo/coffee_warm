@@ -41,14 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # 3rd libraries
+    # Qntas visualizacoes
+    'hitcount',
     # read_time
     'markdown_deux',
     # editor WYSIWYG
     'pagedown',
     # avatar pros user
     'imagekit',
-    # Qntas visualizacoes
-    'hitcount',
 
     # My apps
     'src.apps.core',
