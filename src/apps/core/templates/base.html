@@ -5,24 +5,14 @@
 	<title>{% block title %}{% endblock %}</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-	{% block head %}{% endblock %}
-	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
-	
+	{% block head %}{% endblock %}	
 </head>
 <body>
-	<div id="fb-root"></div>
-<script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = 'https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v3.1';
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+
 	{% block content %}{% endblock %}
 
 
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
 	<!-- Search Ajax Feature -->
 	<script src="https://intercoolerreleases-leaddynocom.netdna-ssl.com/intercooler-1.1.1.min.js"></script>
 	{% block js %}{% endblock %}

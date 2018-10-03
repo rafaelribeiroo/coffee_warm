@@ -167,31 +167,10 @@ class PostDetailView(DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(PostDetailView, self).get_context_data(*args, **kwargs)
-        instance = context['post']
+        instance = context['object']
         context['share_string'] = quote_plus(instance.content)
         return context
 
-'''def post_detail(request, year, month, day, slug=None):
-    instance = get_object_or_404(
-        Post,
-        publish__year=year,
-        publish__month=month,
-        publish__day=day,
-        slug=slug,
-    )
-    if instance.publish > timezone.now().date() or instance.draft:
-        if not request.user.is_staff or not request.user.is_superuser:
-            raise Http404
-    # Enviar pro linkedin, ele pede uma codificação em que os espaços vagos são preenchidos por % @ #
-    share_string = quote_plus(instance.content)
-    context = {
-        # object.title no title
-        "title": instance.title,
-        "instance": instance,
-        "share_string": share_string,
-    }
-    return render(request, "post_detail.html", context)
-'''
 
 def post_delete(request, slug=None):
     if not request.user.is_staff or not request.user.is_superuser:
@@ -199,7 +178,7 @@ def post_delete(request, slug=None):
     instance = get_object_or_404(Post, slug=slug)
     instance.delete()
     messages.success(request, "Successfully deleted")
-    return redirect('post:homepage')
+    return redirect('post:list')
 
 
 @transaction.atomic
@@ -215,7 +194,7 @@ def tag_create(request):
         instance = form.save(commit=False)
         instance.user = request.user
         instance.save()
-        return redirect('utils:homepage')  # Return reverse url
+        return redirect('utils:home')  # Return reverse url
     return render(request, 'tag_create.html', context)
 
 

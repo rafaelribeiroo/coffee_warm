@@ -2,8 +2,9 @@
 {% load static %}
 {% load urlify %}
 {% load hitcount_tags %}
-{% block content %}
 
+
+{% block content %}
 
 {% get_hit_count_js_variables for post as hitcount %}
 {% get_hit_count for post as total_hits %}
@@ -12,20 +13,20 @@
 
 <br><br>
 <div class='col-sm-6 col-sm-offset-3'>
-    {% if post.image %}
-    <img src='{{ post.image.url }}' class='img-responsive' />
+    {% if object.image %}
+    <img src='{{ object.image.url }}' class='img-responsive' />
     {% endif %}
-<h1>{{ post.title }} <small>
-	{% if post.draft %}
+<h1>{{ object.title }} <small>
+	{% if object.draft %}
 	<span style='color:red;'>Draft</span> 
 {% endif %}
 <br>
-{{ post.publish }}</small></h1>
-<h3><small>Tempo decorrido apos a publicacao > </small>{{ post.timestamp|timesince }}</h3>
-{% if post.user.get_full_name %}
+{{ object.publish }}</small></h1>
+<h3><small>Tempo decorrido apos a publicacao > </small>{{ object.timestamp|timesince }}</h3>
+{% if object.user.get_full_name %}
 
-<p>Author: {{ post.user.get_full_name }}</p>
-<p>Read time: {{ post.read_time }}</p>
+<p>Author: {{ object.user.get_full_name }}</p>
+<p>Read time: {{ object.read_time }}</p>
 {% endif %}
 
 <hr/>
@@ -34,14 +35,14 @@
 
 <div class='row'>
 <div class='col-sm-12'>
-{{ post.content|linebreaks }}
+{{ object.content|linebreaks }}
 
 <hr/>
 <br/>
 
 {% if user.is_authenticated %}
-	<a href="{% url 'post:update' post.slug %}">Alterar</a>
-	<a href="{% url 'post:delete' post.slug %}">Excluir</a>
+	<a href="{% url 'post:update' object.slug %}">Alterar</a>
+	<a href="{% url 'post:delete' object.slug %}">Excluir</a>
 {% endif %}
 
 </div>
@@ -52,10 +53,23 @@
 <hr/>
 </p>
 
+{# 127.0.0.1, pq se for localhost o facebook n funciona em dev #}
 <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}">Facebook</a>
 <a href="https://twitter.com/home?status={{ share_string }}%20{{ request.build_absolute_uri }}">Twitter</a>
 <a href="https://plus.google.com/share?url={{ request.build_absolute_uri }}">Google+</a>
-<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}/&title={{ post.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}">Linkedin</a>
+<a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}/&title={{ object.title }}&summary={{ share_string }}&source={{ request.build_absolute_uri }}">Linkedin</a>
+
+
+<div id="fb-root"></div>
+<script type="text/javascript">
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v3.1';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 <div
     class="fb-comments"
@@ -68,6 +82,8 @@
 {% endblock content %}
 
 {% block js %}
+    <!-- Hits on review -->
+    <script type="text/javascript" src="{% static 'js/ajax.js' %}"></script>
     <script src="{% static 'js/jquery.postcsrf.js' %}"></script>
     {% get_hit_count_js_variables for post as hitcount %}
     <script type="text/javascript">

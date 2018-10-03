@@ -8,7 +8,6 @@ clean:
 
 # Rodando em todos os pc's conectados na mesma rede
 run:
-	# 127.0.0.1, pq se for localhost o facebook n funciona em dev
 	python manage.py runserver 127.0.0.1:8000
 
 # Migração de banco de dados

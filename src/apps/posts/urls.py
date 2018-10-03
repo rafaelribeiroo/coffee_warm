@@ -21,7 +21,7 @@ urlpatterns = [
     # Response ajax busca
     path('search_submit/', SearchAjaxSubmitView.as_view(), name='search-ajax-submit'),
     # Listagem de resenhas
-    path('posts/', post_list, name='homepage'),
+    path('posts/', post_list, name='list'),
     # Criacao
     path('posts/redigir/', post_create, name='create'),
     # Detalhes
