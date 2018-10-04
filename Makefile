@@ -44,7 +44,7 @@ del:
 
 # Exportando base de dados
 dump:
-	python manage.py dumpdata --all --natural --indent=4 > db_dump.json
+	python manage.py dumpdata --format=json --indent=4 --database=default --all > db_dump.json
 
 load:
 	python manage.py loaddata db_dump.json  # database=production

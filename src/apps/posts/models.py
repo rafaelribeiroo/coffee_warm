@@ -35,6 +35,8 @@ from .unique_slug import generate_unique_slug
 # Notify subscriber
 from src import settings
 
+from froala_editor.fields import FroalaField
+
 from .unsubscribe_link import generate_unsubscribe_link
 from django.utils.safestring import mark_safe
 
@@ -121,8 +123,7 @@ class Post(models.Model):  # HitCountMixin
     )
     width_field = models.IntegerField('Largura da imagem', default=0)
     height_field = models.IntegerField('Altura', default=0)
-    content = models.TextField('Conteúdo')
-    # Sempre draft, a menos que você indique o contrário
+    content = FroalaField('Conteúdo', theme='dark')
     draft = models.BooleanField('Rascunho', default=True)
     read_time = models.CharField(
         'Tempo de leitura',

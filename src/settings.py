@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     # read_time
     'markdown_deux',
     # editor WYSIWYG
-    'pagedown',
+    'froala_editor',
     # avatar pros user
     'imagekit',
 
@@ -170,3 +170,5 @@ HITCOUNT_HITS_PER_IP_LIMIT = 0  # unlimited
 HITCOUNT_EXCLUDE_USER_GROUP = ()  # not used
 HITCOUNT_KEEP_HIT_ACTIVE = {'minutes': 5}
 HITCOUNT_KEEP_HIT_IN_DATABASE = {'days': 30}
+
+FROALA_INCLUDE_JQUERY = True

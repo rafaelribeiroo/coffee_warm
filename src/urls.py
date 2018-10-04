@@ -10,8 +10,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # CMS django
     path('admin/', admin.site.urls),
+    # Qntos views resenha teve
     path('hitcount/', include('hitcount.urls')),
+    # Editor WYSIWYG
+    path('froala_editor/', include('froala_editor.urls')),
     path('', include((core_urls), namespace='utils')),
     path('', include((posts_urls), namespace='post')),
 ]
