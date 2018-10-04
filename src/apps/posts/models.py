@@ -157,12 +157,6 @@ class Post(models.Model):  # HitCountMixin
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
-    # Retira todas as tags que você tiver passado no content
-    # para ir limpo pro template
-    def get_markdown(self):
-        content = self.content
-        return mark_safe(markdown(content))
-
     # Get the total number of views from post
     '''def get_num_view(self):
                     obj = HitCount.objects.get(object_pk=self.pk)

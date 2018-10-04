@@ -5,7 +5,7 @@
 
 {% block content %}
 	<p>Criar um novo <a href="{% url 'post:create' %}">post</a></p>
-	<form id="form" role="form" action="{% url 'post:search-submit' %}" method="post">
+	<form autocomplete="off" id="form" role="form" action="{% url 'post:search-submit' %}" method="post">
     {% csrf_token %}
         <input name="search"
             id="search"
@@ -67,7 +67,7 @@
 							{% if user.is_authenticated %}
 								<p>seu email e {{ user.email }}</p>
 							{% endif %}
-							<p>{{ post.content|linebreaks|truncatechars:120 }}</p>
+							{{ post.content|safe|truncatechars:120 }}
 						</div>
 					</div>
 				</div>
@@ -85,10 +85,10 @@
 		Loading...
 	</div>
 
-	{% block js %}
+	<!--{% block js %}
 		<script type="text/javascript" src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/infinite.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'js/index.js' %}"></script>
-	{% endblock %}
+	{% endblock %}-->
 
 {% endblock %}

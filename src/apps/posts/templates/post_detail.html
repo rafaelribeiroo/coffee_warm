@@ -11,7 +11,6 @@
 
 <span>{{ total_hits }} views</span>
 
-<br><br>
 <div class='col-sm-6 col-sm-offset-3'>
     {% if object.image %}
     <img src='{{ object.image.url }}' class='img-responsive' />
@@ -33,21 +32,15 @@
 </p>
 
 
-<div class='row'>
-<div class='col-sm-12'>
-{{ object.content|linebreaks }}
+{{ object.content|safe }}
 
-<hr/>
-<br/>
+
 
 {% if user.is_authenticated %}
 	<a href="{% url 'post:update' object.slug %}">Alterar</a>
 	<a href="{% url 'post:delete' object.slug %}">Excluir</a>
 {% endif %}
 
-</div>
-</div>
-</div>
 
 <p><div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 <hr/>
