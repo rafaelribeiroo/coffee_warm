@@ -5,6 +5,7 @@
 {% block title %}Criacao de Resenha{% endblock %}
 
 {% block head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'normalize.css' %}">
 	<!-- CSS Froala -->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/font-awesome.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/froala_editor.min.css' %}">
@@ -64,6 +65,7 @@
 
     	<br><br>
     	
+    	<label>Conteudo:</label>
     	<textarea name="{{ form.content.name }}" id="id_{{ form.content.name }}" cols="40" rows="10" required></textarea> 
 
     	<br><br>
@@ -122,6 +124,22 @@
 	<script type="text/javascript" src="{% static 'js/froala/video.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/froala/word_paste.min.js' %}"></script>
 	<script>
+		$(function(){
+	        $('#id_content').froalaEditor({
+	        	toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html'],
+	        	"imageUploadURL": "/froala_editor/image_upload/", 
+	        	"imageUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "fileUploadURL": "/froala_editor/file_upload/",
+	        	"fileUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "theme": "dark"})
+	    });
+
+		$(function() {
+			$('#id_content').froalaEditor({
+				// Set custom buttons with separator between them.
+				toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html'],
+			})
+		});
+	</script>
+	<!--<script>
 	    $(function(){
 	        $('#id_content').froalaEditor({"inlineMode": false, "imageUploadURL": "/froala_editor/image_upload/", "imageUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "fileUploadURL": "/froala_editor/file_upload/", "fileUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "theme": "dark"})
 	    });
