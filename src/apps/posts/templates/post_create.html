@@ -1,18 +1,23 @@
 {% extends 'base.html' %}
+{% load widget_tweaks %}
 
 
 {% block content %}
+	<h1>Form</h1>
+	<!-- Load staticfiles for froala -->
+	{{ form.media }}
+	<form method='POST' action='' enctype='multipart/form-data'>
+	    {% csrf_token %}
 
+	    {{ form.user }} 
+	    {{ form.title }} 
+	    {{ form.tag }} 
+    	{{ form.content }} 
+	    {{ form.image }} 
+	    {{ form.draft }} 
+	    {{ form.publish }}
+		<input type="submit" value="Criar" />
+	</form>
 
-<div class='col-sm-6 col-sm-offset-3'>
-<h1>Form</h1>
-
-{{ form.media }}
-<form method='POST' action='' enctype='multipart/form-data'>
-    {% csrf_token %}
-    {{ form.as_p }} 
-<input type="submit" class='btn btn-default' value="Criar" />
-</form>
-</div>
-
-{% endblock content %}
+	 
+{% endblock %}

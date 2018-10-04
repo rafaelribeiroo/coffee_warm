@@ -5,7 +5,6 @@ from django.contrib.auth.models import (
 
 from django.core.mail import send_mail
 
-
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 

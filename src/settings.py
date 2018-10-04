@@ -43,12 +43,12 @@ INSTALLED_APPS = [
     # 3rd libraries
     # Qntas visualizacoes
     'hitcount',
-    # read_time
-    'markdown_deux',
     # editor WYSIWYG
     'froala_editor',
     # avatar pros user
     'imagekit',
+    # Render form manually
+    'widget_tweaks',
 
     # My apps
     'src.apps.core',

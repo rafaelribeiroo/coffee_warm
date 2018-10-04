@@ -7,9 +7,6 @@ from django.utils.deconstruct import deconstructible
 # Fim imports UUID
 
 # Imports reading time estimate
-from django.utils.safestring import mark_safe
-from markdown_deux import markdown
-
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 # Fim reading_time
@@ -20,7 +17,7 @@ from django.urls import reverse
 # Fim slugify
 
 # Import datetime
-import datetime  # Atributo created
+import datetime
 from django.utils import timezone
 
 # Import auth
@@ -38,7 +35,6 @@ from src import settings
 from froala_editor.fields import FroalaField
 
 from .unsubscribe_link import generate_unsubscribe_link
-from django.utils.safestring import mark_safe
 
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
