@@ -42,7 +42,7 @@
 	    </select>
 
 	    <label>Titulo:</label>
-   	    <input type="text" minlength="5" maxlength="120" type="text" id="id_{{ form.title.name }}" name="{{ form.title.name }}" required />
+   	    <input type="text" minlength="5" maxlength="120" id="id_{{ form.title.name }}" name="{{ form.title.name }}" required />
 
 	    <label>Tag:</label>
 	    <select name="{{ form.tag.name }}" id="id_{{ form.tag.name }}" required multiple="multiple">
@@ -55,11 +55,15 @@
 
     	<textarea name="{{ form.content.name }}" id="id_{{ form.content.name }}" cols="40" rows="10" required></textarea> 
 
+    	<label>Imagem:</label>
     	<input type="file" name="{{ form.image.name }}" required id="id_{{ form.image.name }}" /> 
 
-    	<input type="checkbox" name="{{ form.draft.name }}" id="id_{{ form.draft.name }}" checked /> 
+    	<label>Rascunho:</label>
+    	<input type="checkbox" name="{{ form.draft.name }}" id="id_{{ form.draft.name }}" {% if form.draft.value == True %}checked{% endif %} /> 
 
-	    {{ form.publish }}
+    	<label>Publicacao:</label>
+   	    <input type="text" id="id_{{ form.publish.name }}" name="{{ form.publish.name }}" value="{{ form.publish.value|date:"d/m/Y" }}" required />
+
 		<input type="submit" value="Criar" />
 	</form>
 
