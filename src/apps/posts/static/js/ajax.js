@@ -1,3 +1,4 @@
+// GET cookie para contar quantos views teve a resenha
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {

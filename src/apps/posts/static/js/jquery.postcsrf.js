@@ -6,6 +6,7 @@
  * https://docs.djangoproject.com/en/1.9/ref/csrf/#ajax
  *
  * Use as you would $.post().
+ * Hitcount
  */
 
 (function($) {
