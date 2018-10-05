@@ -5,7 +5,11 @@
 {% block title %}Criacao de Resenha{% endblock %}
 
 {% block head %}
-	<link rel="stylesheet" type="text/css" href="{% static 'normalize.css' %}">
+	<!-- Fonts WYSIWYG -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+	<link href="https://fontlibrary.org/face/press-start-2p" rel="stylesheet">
+	<!-- Normalize prefixes of the browser -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
 	<!-- CSS Froala -->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/font-awesome.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/froala_editor.min.css' %}">
@@ -27,7 +31,6 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/special_characters.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/table.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/video.min.css' %}">
-
 {% endblock %}
 
 {% block content %}
@@ -123,26 +126,31 @@
 	<script type="text/javascript" src="{% static 'js/froala/url.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/froala/video.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/froala/word_paste.min.js' %}"></script>
-	<script>
+	<script type="text/javascript">
 		$(function(){
-	        $('#id_content').froalaEditor({
-	        	toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html'],
-	        	"imageUploadURL": "/froala_editor/image_upload/", 
-	        	"imageUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "fileUploadURL": "/froala_editor/file_upload/",
-	        	"fileUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "theme": "dark"})
-	    });
-
-		$(function() {
-			$('#id_content').froalaEditor({
-				// Set custom buttons with separator between them.
-				toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html'],
-			})
+		    $('#id_content').froalaEditor({
+		    	toolbarButtons: ['bold', 'italic', 'underline', 'fontFamily', '|', 'paragraphFormat', 'formatOL', 'formatUL', 'outdent', 'indent', '-', 'insertLink', '|', 'quote', 'undo', 'redo', 'clearFormatting', 'selectAll', 'print', 'html', '|', 'fullscreen'],
+		        theme: 'dark',
+		        fontFamily: {
+		            'Roboto Mono,sans-serif': 'Roboto Mono',
+		            'PressStart2PRegular,cursive': '8-Bit',
+		        },
+		        fontFamilyDefaultSelection: 'Roboto Mono',
+		        fontFamilySelection: true,
+		        paragraphFormat: {
+		            N: 'Normal',
+					H1: 'Heading 1',
+					H2: 'Heading 2',
+					H3: 'Heading 3',
+					H4: 'Heading 4',
+					PRE: 'Code',
+		        },
+		        width: '60vw',
+		    	// "imageUploadURL": "/froala_editor/image_upload/",
+		    	// "imageUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "fileUploadURL": "/froala_editor/file_upload/",
+		    	// "fileUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "theme": "dark"})
+			});
 		});
-	</script>
-	<!--<script>
-	    $(function(){
-	        $('#id_content').froalaEditor({"inlineMode": false, "imageUploadURL": "/froala_editor/image_upload/", "imageUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "fileUploadURL": "/froala_editor/file_upload/", "fileUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "theme": "dark"})
-	    });
 	</script>
 
 {% endblock %}

@@ -40,6 +40,10 @@
 								<h3>Futuro post</h3>
 							{% endif %}
 
+							{{ post.user }}
+							{{ user.email }}   
+
+							<br><br>
 
 							{# <a href="{% url 'post:detail' year=post.publish.year month=post.publish.month day=post.publish.day slug=post.slug %}">{{ post.title }}</a> #}
 							<a href='{{ post.get_absolute_url }}'>{{ post.title }}</a>

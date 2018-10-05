@@ -37,8 +37,10 @@
 
 
 {% if user.is_authenticated %}
-	<a href="{% url 'post:update' object.slug %}">Alterar</a>
-	<a href="{% url 'post:delete' object.slug %}">Excluir</a>
+    {% if object.user == user.email %}
+	   <a href="{% url 'post:update' object.slug %}">Alterar</a>
+	   <a href="{% url 'post:delete' object.slug %}">Excluir</a>
+    {% endif %}
 {% endif %}
 
 

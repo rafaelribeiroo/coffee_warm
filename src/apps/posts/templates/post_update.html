@@ -1,8 +1,108 @@
 {% extends "base.html" %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="{% static 'normalize.css' %}">
+	<!-- CSS Froala -->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/font-awesome.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/froala_editor.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/froala_style.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/froala-django.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/dark.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/char_counter.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/code_view.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/colors.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/draggable.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/emoticons.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/file.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/fullscreen.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/help.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/image.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/image_manager.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/line_breaker.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/quick_insert.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/special_characters.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/table.min.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/video.min.css' %}">
+
+{% endblock %}
+
 {% block content %}
 	<form method="POST" enctype='multipart/form-data'>
 		{% csrf_token %}
-		{{ form }}
+
+        <label>Usuario:</label>
+        {{ form.user|attr:"required" }}
+
+        <br><br>
+
+	    <label>Titulo:</label>
+        {{ form.title|attr:"required"|attr:"minlength:5"|attr:"maxlength:120" }}
+
+    	<br><br>
+
+	    <label>Tag:</label>
+        {{ form.tag }}
+
+    	<br><br>
+
+    	<label>Conteudo:</label>
+        {{ form.content|attr:"required"|attr:"cols:40"|attr:"rows:10" }}
+
+    	<br><br>
+
+    	<label>Imagem:</label>
+        {{ form.image|attr:"required" }}
+
+    	<br><br>
+
+    	<label>Rascunho:</label>
+        {{ form.draft }}
+
+    	<br><br>
+
+    	<label>Publicacao:</label>
+        {{ form.publish|attr:"required" }}
+
 		<button type="submit">Alterar</button>
+
 	</form>
+
+{% endblock %}
+
+{% block js %}
+	<!-- JS Froala -->
+	<script type="text/javascript" src="{% static 'js/froala/froala_editor.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/froala-django.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/align.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/char_counter.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/code_beautifier.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/code_view.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/colors.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/draggable.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/emoticons.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/entities.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/file.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/font_family.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/font_size.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/fullscreen.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/help.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/image.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/image_manager.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/inline_style.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/line_breaker.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/link.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/lists.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/paragraph_format.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/paragraph_style.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/print.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/quick_insert.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/quote.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/save.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/special_characters.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/table.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/url.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/video.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/froala/word_paste.min.js' %}"></script>
 {% endblock %}

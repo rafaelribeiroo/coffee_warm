@@ -104,6 +104,7 @@ class Post(models.Model):  # HitCountMixin
         verbose_name='Usuário',
     )
     title = models.CharField('Título', max_length=120)
+    subtitle = models.CharField('Subtítulo', max_length=120)
     slug = models.SlugField('URL do titulo', unique=True, max_length=250)
     tag = models.ManyToManyField(
         Tag,
