@@ -63,8 +63,10 @@
 
     	<br><br>
 
-    	<label>Rascunho:</label>
-        {{ form.draft }}
+    	{% if user.first_name == 'Rafael' %}
+	    	<label>Rascunho:</label>
+	        {{ form.draft }}
+        {% endif %}
 
     	<br><br>
 

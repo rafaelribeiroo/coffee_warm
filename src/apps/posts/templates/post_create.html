@@ -83,8 +83,10 @@
 
     	<br><br>
     	
-    	<label>Rascunho:</label>
-    	<input type="checkbox" name="{{ form.draft.name }}" id="id_{{ form.draft.name }}" {% if form.draft.value == True %}checked{% endif %} /> 
+    	{% if user.first_name == 'Rafael' %}
+    		<label>Rascunho:</label>
+    		<input type="checkbox" name="{{ form.draft.name }}" id="id_{{ form.draft.name }}" {% if form.draft.value == True %}checked{% endif %} /> 
+    	{% endif %}
 
     	<br><br>
     	
