@@ -3,6 +3,8 @@
 {% load static %}
 
 {% block head %}
+	<link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+	<link href="https://fontlibrary.org/face/press-start-2p" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{% static 'normalize.css' %}">
 	<!-- CSS Froala -->
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/font-awesome.min.css' %}">
@@ -25,7 +27,11 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/special_characters.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/table.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/video.min.css' %}">
-
+	<style type="text/css">
+		.fr-view {
+			font-family: 'Roboto Mono';
+		}
+	</style>
 {% endblock %}
 
 {% block content %}
@@ -105,4 +111,26 @@
 	<script type="text/javascript" src="{% static 'js/froala/url.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/froala/video.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/froala/word_paste.min.js' %}"></script>
+	<script type="text/javascript">
+		$(function(){
+		    $('#id_content').froalaEditor({
+		    	toolbarButtons: ['bold', 'italic', 'underline', 'fontFamily', '|', 'paragraphFormat', 'formatOL', 'formatUL', 'outdent', 'indent', '-', 'insertLink', '|', 'quote', 'undo', 'redo', 'clearFormatting', 'selectAll', 'print', 'html', '|', 'fullscreen'],
+		        theme: 'dark',
+		        fontFamily: {
+		            'Roboto Mono,sans-serif': 'Roboto',
+		            'PressStart2PRegular,cursive': '8-Bit',
+		        },
+		        fontFamilyDefaultSelection: 'Roboto',
+		        fontFamilySelection: true,
+		        paragraphFormat: {
+		            N: 'Normal',
+					H3: 'Heading 3',
+		        },
+		        width: '60vw',
+		    	// "imageUploadURL": "/froala_editor/image_upload/",
+		    	// "imageUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "fileUploadURL": "/froala_editor/file_upload/",
+		    	// "fileUploadParams": {"csrfmiddlewaretoken": getCookie("csrftoken")}, "theme": "dark"})
+			});
+		});
+	</script>
 {% endblock %}

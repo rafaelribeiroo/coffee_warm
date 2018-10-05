@@ -31,6 +31,11 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/special_characters.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/table.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/froala/video.min.css' %}">
+	<style type="text/css">
+		.fr-view {
+			font-family: 'Roboto Mono';
+		}
+	</style>
 {% endblock %}
 
 {% block content %}
@@ -132,18 +137,14 @@
 		    	toolbarButtons: ['bold', 'italic', 'underline', 'fontFamily', '|', 'paragraphFormat', 'formatOL', 'formatUL', 'outdent', 'indent', '-', 'insertLink', '|', 'quote', 'undo', 'redo', 'clearFormatting', 'selectAll', 'print', 'html', '|', 'fullscreen'],
 		        theme: 'dark',
 		        fontFamily: {
-		            'Roboto Mono,sans-serif': 'Roboto Mono',
+		            'Roboto Mono,sans-serif': 'Roboto',
 		            'PressStart2PRegular,cursive': '8-Bit',
 		        },
-		        fontFamilyDefaultSelection: 'Roboto Mono',
+		        fontFamilyDefaultSelection: 'Roboto',
 		        fontFamilySelection: true,
 		        paragraphFormat: {
 		            N: 'Normal',
-					H1: 'Heading 1',
-					H2: 'Heading 2',
 					H3: 'Heading 3',
-					H4: 'Heading 4',
-					PRE: 'Code',
 		        },
 		        width: '60vw',
 		    	// "imageUploadURL": "/froala_editor/image_upload/",
