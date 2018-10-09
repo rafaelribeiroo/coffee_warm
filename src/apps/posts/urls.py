@@ -25,7 +25,7 @@ urlpatterns = [
     # Criacao
     path('posts/redigir/', post_create, name='create'),
     # Detalhes
-    path('post/<int:day>/<int:month>/<int:year>/<str:slug>', PostDetailView.as_view(), name='detail'),
+    path('<int:day>/<int:month>/<int:year>/post/<str:slug>', PostDetailView.as_view(), name='detail'),
     # Edicao
     path('post/<str:slug>/editar/', post_update, name='update'),
     # Exclusao

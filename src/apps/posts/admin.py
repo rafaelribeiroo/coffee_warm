@@ -6,7 +6,7 @@ from .models import (
 )
 
 
-@admin.register(Post)
+'''@admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ['title', 'slug', 'updated', 'read_time']
     readonly_fields = ['slug', 'read_time']
@@ -17,7 +17,7 @@ class PostModelAdmin(admin.ModelAdmin):
     save_on_top = True
 
     class Meta:
-        model = Post
+        model = Post'''
 
 
 @admin.register(Tag)
