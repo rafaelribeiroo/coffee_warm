@@ -165,9 +165,6 @@ class Post(models.Model):  # HitCountMixin
         )
 
     def save(self, *args, **kwargs):
-        # slug = slugify(self.title)
-        # if self.slug != slug:
-        #    self.slug = slug
         if self.slug:
             if slugify(self.title) != self.slug:
                 self.slug = generate_unique_slug(Post, self.title)
@@ -180,7 +177,7 @@ class Post(models.Model):  # HitCountMixin
     def notify_subscribers(self):
         subject = "Novo post em 'Catarse Literária' sobre: " + self.title
         from_email = settings.DEFAULT_FROM_EMAIL
-        # link_to_review = settings.DOMAIN_DETAIL + str(self.publish.day) + '/' + str(self.publish.month) + '/' + str(self.publish.year) + '/' + self.slug
+        link_to_review = settings.DOMAIN + str(self.publish.day) + '/' + str(self.publish.month) + '/' + str(self.publish.year) + '/post/' + self.slug
         for recipient in Subscriber.objects.all():
             context = {
                 'person': recipient.first_name,
@@ -188,7 +185,7 @@ class Post(models.Model):  # HitCountMixin
                 'unsubscribe': generate_unsubscribe_link(
                     recipient.email_address
                 ),
-                # 'link': link_to_review,
+                'link': link_to_review,
                 'domain': settings.DOMAIN,
             }
             recipes = [recipient.email_address]
