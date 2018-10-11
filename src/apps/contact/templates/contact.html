@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block title %}Fale Conosco || It's Your Choice{% endblock %}
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        
+        <h3>{{ title }}</h3>
+        {% if confirm_message %}
+            <br><br>
+            <h3>
+                {{ confirm_message }}
+            </h3>
+            <br><br>
+            <div>
+                <button type="submit">
+                    Retornar
+                </button>
+            </div>
+        {% endif %}  
+
+        {% if form %}
+            <label for="id_{{ form.name.name }}">Nome</label>
+            <input pattern"[0-9\ a-zA-Z]+" minlength="10" maxlength="60" style="text-transform: capitalize;" autofocus required="required" type="text" id="id_{{ form.name.name }}" pattern="[A-z\s]+$" name="{{ form.name.name }}" value="{{ value }}">
+
+            <br>
+
+            <label>Opcao:</label>
+            {{ form.option|attr:"class:alguma" }}
+
+            <br>
+
+            <label for="id_{{ form.email_address.name }}">Email</label>
+            <input type="email" id="id_{{ form.email_address.name }}" required="required" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="{{ form.email_address.name }}" value="{{ value }}">
+
+            <br>
+
+            <label for="id_{{ form.message.name }}">Deixe sua opinião aqui</label>
+            <textarea type="text" required="required" name="{{ form.message.name }}" rows="5" id="id_{{ form.message.name }}">{{ value }}</textarea>
+
+            <br>
+
+            <input type="submit" value="Ok" name="">
+
+        {% endif %}
+    </form>
+{% endblock %}

@@ -4,6 +4,7 @@ from django.urls import path, include
 # Multiple URLs
 from src.apps.core import urls as core_urls
 from src.apps.posts import urls as posts_urls
+from src.apps.contact import urls as contact_urls
 
 # ImageField
 from django.conf import settings
@@ -18,7 +19,11 @@ urlpatterns = [
     path('froala_editor/', include('froala_editor.urls')),
     path('', include((core_urls), namespace='utils')),
     path('', include((posts_urls), namespace='post')),
+    path('', include((contact_urls), namespace='contact')),
 ]
 
 if settings.DEBUG is True:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT
+    )

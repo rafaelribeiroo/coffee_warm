@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # My apps
     'src.apps.core',
     'src.apps.posts',
+    'src.apps.contact',
     'src.apps.accounts',
 ]
 
@@ -150,6 +151,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'accounts.User'
 
+# Configuracao GMAIL para enviar EMAIL de notificacao
+# E receber dos usuarios sobre feedbacks
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
