@@ -16,21 +16,18 @@ from django.utils.text import slugify
 from django.urls import reverse
 # Fim slugify
 
-# Import datetime
-import datetime
+# Publish attribute
+from datetime import date
 from django.utils import timezone
 
 # Import auth
 from django.conf import settings
 
-# Unique slug
-from .utils import unique_slug_generator
-
 # Tag
 from .unique_slug import generate_unique_slug
 
 # Notify subscriber
-from src import settings
+from django.conf import settings
 
 from froala_editor.fields import FroalaField
 
@@ -92,7 +89,6 @@ class Tag(models.Model):
         else:  # create
             self.slug = generate_unique_slug(Tag, self.title)
         # self.slug = slugify(self.title)
-        # Pega o titulo e cria um slug, so nao assegura que o slug seja unico, diferente do Post
         super(Tag, self).save(*args, **kwargs)
 
 
@@ -104,6 +100,7 @@ class Post(models.Model):  # HitCountMixin
         verbose_name='Usuário',
     )
     title = models.CharField('Título', max_length=120)
+    # Subtitulo no post_detail.html
     subtitle = models.CharField('Subtítulo', max_length=120)
     slug = models.SlugField('URL do titulo', unique=True, max_length=250)
     tag = models.ManyToManyField(
@@ -128,15 +125,17 @@ class Post(models.Model):  # HitCountMixin
         null=True,
         blank=True
     )
-    publish = models.DateField('Publicação', default=datetime.date.today)
+    publish = models.DateField('Publicação', default=date.today)
     updated = models.DateTimeField(
         'Alteração',
         auto_now=True,
-        auto_now_add=False)
+        auto_now_add=False
+    )
     timestamp = models.DateTimeField(
         'Tempo recorrente',
         auto_now=False,
-        auto_now_add=True)
+        auto_now_add=True
+    )
     hit_count_generic = GenericRelation(
         HitCount,
         object_id_field='object_pk',
@@ -154,18 +153,6 @@ class Post(models.Model):  # HitCountMixin
         verbose_name = 'Post'
         verbose_name_plural = 'Posts'
 
-    # Get the total number of views from post
-    '''def get_num_view(self):
-                    obj = HitCount.objects.get(object_pk=self.pk)
-                    if obj is not None:
-                        return obj.hits
-                    else:
-                        return 0
-
-                def as_json(self):
-                    return dict(
-                        title=self.title, num_view=self.get_num_view())'''
-
     def get_absolute_url(self):
         return reverse(
             "post:detail",
@@ -181,6 +168,11 @@ class Post(models.Model):  # HitCountMixin
         # slug = slugify(self.title)
         # if self.slug != slug:
         #    self.slug = slug
+        if self.slug:
+            if slugify(self.title) != self.slug:
+                self.slug = generate_unique_slug(Post, self.title)
+        else:  # create
+            self.slug = generate_unique_slug(Post, self.title)
         if self.draft is False:
             self.notify_subscribers()
         return super(Post, self).save(*args, **kwargs)
@@ -189,7 +181,6 @@ class Post(models.Model):  # HitCountMixin
         subject = "Novo post em 'Catarse Literária' sobre: " + self.title
         from_email = settings.DEFAULT_FROM_EMAIL
         # link_to_review = settings.DOMAIN_DETAIL + str(self.publish.day) + '/' + str(self.publish.month) + '/' + str(self.publish.year) + '/' + self.slug
-        link_to_review = Post.objects.all().order_by('-id')
         for recipient in Subscriber.objects.all():
             context = {
                 'person': recipient.first_name,
@@ -197,7 +188,7 @@ class Post(models.Model):  # HitCountMixin
                 'unsubscribe': generate_unsubscribe_link(
                     recipient.email_address
                 ),
-                'links': link_to_review,
+                # 'link': link_to_review,
                 'domain': settings.DOMAIN,
             }
             recipes = [recipient.email_address]
@@ -238,23 +229,4 @@ def CountReadTime(sender, instance, **kwargs):
 # Fim da função
 
 
-def create_slug(instance, new_slug=None):
-    # Método slugify para o front-end
-    slug = slugify(instance.title)
-    if new_slug is not None:
-        slug = new_slug
-    qs = Post.objects.filter(slug=slug).order_by("-id")
-    exists = qs.exists()
-    if exists:
-        new_slug = "%s-%s" % (slug, qs.first().id)
-        return create_slug(instance, new_slug=new_slug)
-    return slug
-
-
-def pre_save_post_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = unique_slug_generator(instance)
-
-
 pre_save.connect(CountReadTime, sender=Post)
-pre_save.connect(pre_save_post_receiver, sender=Post)
