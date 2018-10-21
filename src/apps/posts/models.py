@@ -20,9 +20,6 @@ from django.urls import reverse
 from datetime import date
 from django.utils import timezone
 
-# Import auth
-from django.conf import settings
-
 # Tag
 from .unique_slug import generate_unique_slug
 

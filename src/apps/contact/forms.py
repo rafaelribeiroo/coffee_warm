@@ -1,9 +1,4 @@
 from django import forms
-# from django.core.mail import send_mail
-
-# import settings Isso iria importar apenas os arquivos settings.py
-# Já no .conf ele trás os settings.py e também as configurações padrões
-# do Django
 from django.conf import settings
 
 from .utils import send_mail_template
@@ -13,14 +8,14 @@ class Contato(forms.Form):
 
     name = forms.CharField(label='Nome:', max_length=100, required=True)
     email_address = forms.EmailField(label='Email:', required=True)
-    CHOICES = (
-        ('Sugestão', 'Sugestão'),
-        ('Parceria', 'Parceria'),
+    option = (
+        ('1', 'Sugestão'),
+        ('2', 'Parceria'),
     )
     option = forms.CharField(
         label='Opção:',
         required=True,
-        widget=forms.Select(choices=CHOICES)
+        widget=forms.Select(choices=option)
     )
     message = forms.CharField(  # Não tem TextField então é CharField
         label='Mande sua sugestão',

@@ -16,7 +16,6 @@ from decouple import config as config_decouple
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
@@ -24,13 +23,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = config_decouple('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config_decouple('DEBUG', default=False, cast=bool)
+DEBUG = config_decouple('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = []
-
+if DEBUG:  # is true
+    ALLOWED_HOSTS = []
+else:  # is false
+    ALLOWED_HOSTS = ['suaescolha.herokuapp.com', '.suaescolha.com', ]
+    ADMINS = [
+        ('Rafael Ribeiro', 'pereiraribeirorafael@gmail.com')
+    ]
+    MANAGERS = ADMINS
 
 # Application definition
-
 INSTALLED_APPS = [
     # Django Apps
     'django.contrib.admin',
@@ -43,10 +47,10 @@ INSTALLED_APPS = [
     # 3rd libraries
     # Qntas visualizacoes
     'hitcount',
-    # editor WYSIWYG
-    'froala_editor',
     # avatar pros user
     'imagekit',
+    # editor WYSIWYG
+    'froala_editor',
     # Render form manually
     'widget_tweaks',
     # Media on S3
@@ -59,8 +63,15 @@ INSTALLED_APPS = [
     'src.apps.accounts',
 ]
 
+if not DEBUG:
+    INSTALLED_APPS += [
+        # Media no S3
+        'storages',
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -107,6 +118,32 @@ DATABASES = {
     }
 }
 
+if not DEBUG:
+    import dj_database_url as db
+    # Configuring Heroku to Postgre
+    DATABASES['default'] = db.config()
+    # Honor the 'X-Forwarded-Proto' header for request.is_secure()
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    # BASE_DIR above src/
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+    # Whitenoise needs STATIC_ROOT
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+    # Whitenoise referenced
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    # Chave de acesso pra upar midias no S3
+    AWS_ACCESS_KEY_ID = config_decouple('AWS_ACCESS_KEY_ID')
+    # Criar um bucket
+    AWS_AUTO_CREATE_BUCKET = True
+    # Apelidando o bucket
+    AWS_STORAGE_BUCKET_NAME = 'your_choice'
+    # Definindo as permissoes
+    AWS_DEFAULT_ACL = 'public-read'
+    # Chave de acesso privada
+    AWS_SECRET_ACCESS_KEY = config_decouple('AWS_SECRET_ACCESS_KEY')
+    # Dominio que o Django pegara minhas midias
+    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    # Apontando nosso arquivo storage_backends para configuracoes
+    DEFAULT_FILE_STORAGE = 'src.storage_backends.MediaStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
