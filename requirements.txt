@@ -22,7 +22,7 @@ jmespath==0.9.3
 markdown2==2.3.8
 paramiko==2.4.2
 pilkit==2.0
-Pillow==5.2.0
+Pillow==6.2.0
 psycopg2-binary==2.7.5
 pyasn1==0.4.4
 pycparser==2.19
