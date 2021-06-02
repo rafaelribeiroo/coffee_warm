@@ -19,7 +19,7 @@ gunicorn==19.9.0
 idna==2.7
 invoke==1.2.0
 jmespath==0.9.3
-markdown2==2.3.8
+markdown2==2.4.0
 paramiko==2.4.2
 pilkit==2.0
 Pillow==5.2.0
